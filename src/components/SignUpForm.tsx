@@ -12,7 +12,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import type { FormEvent } from "react"
 
 const signUpSchema = z.object({
   username: z.string().min(3, {
@@ -45,13 +44,6 @@ export default function SignUpForm() {
     }
 
     const response = await axios.post("/api/signup", data)
-
-    // const response = await fetch("/api/signup", {
-    //   method: "POST",
-    //   body: formData,
-    // })
-
-    console.log(response)
 
     if (response.status === 200) return (window.location.href = "/")
   }
@@ -104,7 +96,7 @@ export default function SignUpForm() {
               </FormItem>
             )}
           />
-          <Button type='submit'>Sign Up</Button>
+          <Button type='submit'>Sign Up Now</Button>
         </form>
       </Form>
 

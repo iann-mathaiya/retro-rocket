@@ -1,3 +1,4 @@
+import axios from "axios"
 import { z } from "astro/zod"
 import { Button } from "./ui/button"
 import { useForm } from "react-hook-form"
@@ -12,56 +13,47 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 
-const formSchema = z.object({
-  emailAddress: z.string().email(),
+const signUpSchema = z.object({
+  email_address: z.string().email(),
   password: z.string().min(8, {
     message: "Password must be at least 8 characters.",
   }),
 })
 
-export default function LoginForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+type SignUpSchema = z.infer<typeof signUpSchema>
+
+export default function SignUpForm() {
+  const form = useForm<SignUpSchema>({
+    resolver: zodResolver(signUpSchema),
     defaultValues: {
       password: "",
-      emailAddress: "",
+      email_address: "",
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+  async function handleSignUp(values: SignUpSchema) {
+
+    const data = {
+      password: values.password,
+      emailAddress: values.email_address,
+    }
+
+    const response = await axios.post("/api/login", data)
+
+    if (response.status === 200) return (window.location.href = "/")
   }
-
-  // async function handleSignUp(e: FormEvent<HTMLFormElement>) {
-  //   e.preventDefault()
-  //   const formData = new FormData(e.target as HTMLFormElement)
-
-  //   const data = Object.fromEntries(formData)
-
-  //   const validatedForm = formSchema.safeParse(data)
-
-  //   console.log(validatedForm)
-
-  //   // const response = await fetch("/api/signup", {
-  //   //   method: "POST",
-  //   //   body: formData,
-  //   // })
-
-  //   // console.log(response)
-
-  //   // if (response.status === 200) return (window.location.href = "/")
-  // }
 
   return (
     <>
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(handleSignUp)}
           className='mx-auto mt-16 mb-2 max-w-sm space-y-4'
         >
+
           <FormField
             control={form.control}
-            name='emailAddress'
+            name='email_address'
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Email Address</FormLabel>
@@ -80,18 +72,20 @@ export default function LoginForm() {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder='rfr%R$5/4*?' {...field} />
+                  <Input type='password' placeholder='rfr%R$5/4*?' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button type='submit'>Submit</Button>
+          <Button type='submit'>Authenticate</Button>
         </form>
       </Form>
 
-      <a href='/signup' className="flex justify-center">
-        <Button variant='link' className="w-2/3 max-w-sm mx-auto">Create Account</Button>
+      <a href='/signup' className='flex justify-center'>
+        <Button variant='link' className='w-2/3 max-w-sm mx-auto'>
+          Open new account
+        </Button>
       </a>
     </>
   )

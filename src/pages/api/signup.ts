@@ -9,8 +9,6 @@ import type { APIContext } from "astro"
 export async function POST(context: APIContext): Promise<Response> {
   const body = await context.request.json()
 
-  console.log(body)
-
   const userId = generateId(15)
   const hashedPassword = await new Argon2id().hash(body.password)
 
