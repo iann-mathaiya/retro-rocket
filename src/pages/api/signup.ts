@@ -7,20 +7,18 @@ import { Argon2id } from "oslo/password"
 import type { APIContext } from "astro"
 
 export async function POST(context: APIContext): Promise<Response> {
-  const formData = await context.request.formData()
+  const body = await context.request.json()
 
-  const username = String(formData.get("username"))
-  const emailAddress = String(formData.get("email_address"))
-  const password = String(formData.get("password"))
+  console.log(body)
 
   const userId = generateId(15)
-  const hashedPassword = await new Argon2id().hash(password)
+  const hashedPassword = await new Argon2id().hash(body.password)
 
   await db.insert(users).values({
     id: userId,
-    username: username,
+    username: body.username,
     hashed_password: hashedPassword,
-    email_address: emailAddress.toLowerCase(),
+    email_address: body.emailAddress.toLowerCase(),
   })
 
   const session = await lucia.createSession(userId, {})

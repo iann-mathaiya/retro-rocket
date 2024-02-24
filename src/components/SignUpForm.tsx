@@ -1,3 +1,4 @@
+import axios from "axios"
 import { z } from "astro/zod"
 import { Button } from "./ui/button"
 import { useForm } from "react-hook-form"
@@ -11,32 +12,44 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import type { FormEvent } from "react"
 
-const formSchema = z.object({
+const signUpSchema = z.object({
   username: z.string().min(3, {
     message: "Username must be at least 3 characters.",
   }),
-  emailAddress: z.string().email(),
+  email_address: z.string().email(),
   password: z.string().min(8, {
     message: "Password must be at least 8 characters.",
   }),
 })
 
+type SignUpSchema = z.infer<typeof signUpSchema>
+
 export default function SignUpForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<SignUpSchema>({
+    resolver: zodResolver(signUpSchema),
     defaultValues: {
       password: "",
       username: "",
-      emailAddress: "",
+      email_address: "",
     },
   })
 
-  async function handleSignUp(formData: z.infer<typeof formSchema>) {
-    const response = await fetch("/api/signup", {
-      method: "POST",
-      body: JSON.stringify(formData),
-    })
+  async function handleSignUp(values: SignUpSchema) {
+
+    const data = {
+      username: values.username,
+      password: values.password,
+      emailAddress: values.email_address,
+    }
+
+    const response = await axios.post("/api/signup", data)
+
+    // const response = await fetch("/api/signup", {
+    //   method: "POST",
+    //   body: formData,
+    // })
 
     console.log(response)
 
@@ -66,7 +79,7 @@ export default function SignUpForm() {
 
           <FormField
             control={form.control}
-            name='emailAddress'
+            name='email_address'
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Email Address</FormLabel>
@@ -85,7 +98,7 @@ export default function SignUpForm() {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder='rfr%R$5/4*?' {...field} />
+                  <Input type='password' placeholder='rfr%R$5/4*?' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -95,8 +108,10 @@ export default function SignUpForm() {
         </form>
       </Form>
 
-      <a href='/login' className="flex justify-center">
-        <Button variant='link' className="w-2/3 max-w-sm mx-auto">Access my account instead</Button>
+      <a href='/login' className='flex justify-center'>
+        <Button variant='link' className='w-2/3 max-w-sm mx-auto'>
+          Access my account instead
+        </Button>
       </a>
     </>
   )
