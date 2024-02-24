@@ -1,5 +1,6 @@
 ---
 import '@/styles/globals.css'
+import { Toaster } from '@/components/ui/sonner'
 ---
 <html lang="en">
 	<head>
@@ -9,7 +10,8 @@ import '@/styles/globals.css'
 		<meta name="generator" content={Astro.generator} />
 		<title>Astro</title>
 	</head>
-	<body>
+	<body class='pt-8 sm:pt-20 mx-auto max-w-screen-md'>
 		<slot />
+		
 	</body>
 </html>

@@ -1,9 +1,10 @@
 ---
-import { Button } from "@/components/ui/button"
 import RootLayout from "@/layouts/RootLayout.astro"
+import Toast from "src/components/Toast.tsx"
+
 ---
 
 <RootLayout>
   <h1>Astro</h1>
-  <Button>Hello</Button>
+  <Toast client:load />
 </RootLayout>
