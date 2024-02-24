@@ -7,7 +7,11 @@
     "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "migrate": "drizzle-kit generate:sqlite --config=drizzle.config.ts",
+    "drop": "drizzle-kit drop --config=drizzle.config.ts",
+    "db:push": "drizzle-kit push:sqlite --config=drizzle.config.ts",
+    "studio": "drizzle-kit studio --config=drizzle.config.ts"
   },
   "dependencies": {
     "@astrojs/check": "^0.5.5",
