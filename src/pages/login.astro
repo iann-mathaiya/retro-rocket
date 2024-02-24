@@ -1,6 +1,10 @@
 ---
 import LoginForm from "../components/LoginForm"
 import RootLayout from "../layouts/RootLayout.astro"
+
+const data = Astro.locals
+
+if(data.session && data.user) return Astro.redirect('/')
 ---
 
 <RootLayout title='Retro Rocket 🚀 Sign Up'>
