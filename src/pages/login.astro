@@ -7,6 +7,6 @@ const data = Astro.locals
 if(data.session && data.user) return Astro.redirect('/')
 ---
 
-<RootLayout title='Retro Rocket 🚀 Sign Up'>
+<RootLayout title='Retro Rocket 🚀 Login'>
   <LoginForm client:load />
 </RootLayout>

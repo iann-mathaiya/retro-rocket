@@ -25,7 +25,7 @@ declare module "lucia" {
   }
 }
 
-interface DatabaseUserAttributes {
+export interface DatabaseUserAttributes {
   role: string
   username: string
   email_address: string

@@ -13,25 +13,25 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 
-const signUpSchema = z.object({
+const loginSchema = z.object({
   email_address: z.string().email(),
   password: z.string().min(8, {
     message: "Password must be at least 8 characters.",
   }),
 })
 
-type SignUpSchema = z.infer<typeof signUpSchema>
+type LoginSchema = z.infer<typeof loginSchema>
 
 export default function SignUpForm() {
-  const form = useForm<SignUpSchema>({
-    resolver: zodResolver(signUpSchema),
+  const form = useForm<LoginSchema>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       password: "",
       email_address: "",
     },
   })
 
-  async function handleSignUp(values: SignUpSchema) {
+  async function handleSignUp(values: LoginSchema) {
 
     const data = {
       password: values.password,

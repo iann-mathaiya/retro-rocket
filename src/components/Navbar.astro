@@ -4,6 +4,12 @@ import LogoutForm from "./LogoutForm"
 import { Icon } from "astro-icon/components"
 
 const data = Astro.locals
+const { user } = data
+
+const adminRoutes = [
+  { id: 1, route: "/products", iconSrc: "lucide:bookmark" },
+  { id: 2, route: "/orders", iconSrc: "lucide:package" },
+]
 ---
 
 <header class='flex justify-between items-center'>
@@ -14,7 +20,7 @@ const data = Astro.locals
       class='nav-links hidden sm:flex items-center gap-2'
     >
       {
-        data.user ? (
+        user ? (
           <div class='flex items-center gap-2'>
             <a
               href='/cart'
