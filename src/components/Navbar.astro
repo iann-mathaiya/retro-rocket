@@ -1,0 +1,47 @@
+---
+import Logo from "./Logo.astro"
+import { twMerge } from "tailwind-merge"
+import { Icon } from "astro-icon/components"
+
+type navLink = {
+  id: number
+  href: string
+  iconSrc: string
+  protected?: boolean
+}
+
+const navLinks: navLink[] = [
+{
+    id: 1,
+
+    href: "/cart",
+    iconSrc: "lucide:shopping-cart",
+  },
+  {
+    id: 2,
+    iconSrc: "lucide:log-in",
+    href: "/login",
+  },
+]
+
+const { pathname } = Astro.url
+---
+
+<header class='flex justify-between items-center'>
+  <Logo />
+  <nav transition:animate='slide' class='nav-links hidden sm:flex items-center gap-2'>
+    {
+      navLinks.map(({ iconSrc, href }) => (
+        <a
+          href={href}
+          class={twMerge(
+            "p-2 text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded transition-colors",
+            pathname === href && "text-orange-500 hover:no-underline"
+          )}
+        >
+        <Icon name={iconSrc} size={20} />
+        </a>
+      ))
+    }
+  </nav>
+</header>
