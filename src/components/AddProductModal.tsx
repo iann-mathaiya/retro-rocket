@@ -32,6 +32,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { ImageUploader } from "./ImageUploader"
 
 const productSchema = z.object({
   discount: z.number().optional(),
@@ -90,11 +91,9 @@ export default function AddProductModal() {
               onSubmit={form.handleSubmit(handleSignUp)}
               className='mt-4 sm:mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4'
             >
-              <div>
-                <p>Picurre</p>
-              </div>
+              <div><ImageUploader /></div>
 
-              <div className="space-y-4">
+              <div className='space-y-4'>
                 <FormField
                   control={form.control}
                   name='title'
@@ -130,7 +129,7 @@ export default function AddProductModal() {
                     <FormItem>
                       <FormLabel>Category</FormLabel>
                       <FormControl>
-                        <Select {...field}>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <SelectTrigger>
                             <SelectValue placeholder='Select a category' />
                           </SelectTrigger>
