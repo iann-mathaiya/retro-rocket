@@ -1,13 +1,5 @@
-import react from "@astrojs/react";
-import tailwind from "@astrojs/tailwind";
-import { defineConfig } from "astro/config";
-
-import icon from "astro-icon";
+// @ts-check
+import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
-export default defineConfig({
-  output: "hybrid",
-  integrations: [react(), tailwind({
-    applyBaseStyles: false
-  }), icon()]
-});
+export default defineConfig({});
