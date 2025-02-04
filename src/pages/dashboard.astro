@@ -1,0 +1,26 @@
+---
+import RootLayout from "../layouts/RootLayout.astro";
+import { app } from "../firebase/server";
+import { getAuth } from "firebase-admin/auth";
+
+const auth = getAuth(app);
+
+const sessionCookie = Astro.cookies.get("__session")?.value;
+
+if (!sessionCookie) {
+    return Astro.redirect("/signin");
+}
+
+const decodedCookie = await auth.verifySessionCookie(sessionCookie);
+const user = await auth.getUser(decodedCookie.uid);
+
+if (!user) {
+    return Astro.redirect("/signin");
+}
+---
+
+<RootLayout>
+    <section class="mx-auto w-full min-h-screen bg-gradient-to-br from-[#f8f9c7]/80 to-[#f0cd97]/80">
+        <h1>Dashboard</h1>
+    </section>
+</RootLayout>

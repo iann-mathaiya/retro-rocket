@@ -2,13 +2,13 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
-    apiKey: import.meta.env.FIREBASE_API_KEY ,
-    authDomain: import.meta.env.FIREBASE_AUTH_DOMAIN,
-    projectId: import.meta.env.FIREBASE_PROJECT_ID,
-    storageBucket: import.meta.env.FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: import.meta.env.FIREBASE_MESSAGING_SENDER_ID,
-    appId: import.meta.env.FIREBASE_APP_ID,
-    measurementId: import.meta.env.FIREBASE_MEASUREMENT_ID,
+  apiKey: "AIzaSyCmOwuJ9fEHnPXZODMcotj4dr2qWszZta4",
+  authDomain: "retro-rocket-db872.firebaseapp.com",
+  projectId: "retro-rocket-db872",
+  storageBucket: "retro-rocket-db872.firebasestorage.app",
+  messagingSenderId: "694718555028",
+  appId: "1:694718555028:web:04db9e7340bb3b4e81e581",
+  measurementId: "G-LN4JGGV1JV"
   };  
 
 export const app = initializeApp(firebaseConfig);
