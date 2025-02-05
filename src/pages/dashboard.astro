@@ -3,6 +3,7 @@ import Logo from "../assets/logo.svg";
 import { app } from "../firebase/server";
 import { getAuth } from "firebase-admin/auth";
 import RootLayout from "../layouts/RootLayout.astro";
+import AdminLayout from "../layouts/AdminLayout.astro";
 
 const auth = getAuth(app);
 
@@ -22,20 +23,8 @@ if (!user) {
 const title = 'Dashboard'
 ---
 
-<RootLayout title={title}>
-    <section class="w-full min-h-screen bg-gradient-to-br from-[#f8f9c7]/80 to-[#f0cd97]/80">
-        <div class="mx-auto w-full max-w-screen-lg">
-            <div class="p-4 flex items-center justify-between">
-                <a href="/dashboard">
-                    <Logo width={32} height={32} fill="currentColor" />
-                </a>
-
-                <div class="flex items-center justify-center gap-4">
-                    <a href="/orders" class="text-sm text-gray-600 hover:text-orange-600">Orders</a>
-                    <a href="/customers" class="text-sm text-gray-600 hover:text-orange-600">Customers</a>
-                    <a href="/products" class="text-sm text-gray-600 hover:text-orange-600">Products</a>
-                </div>
-            </div>
-        </div>
+<AdminLayout title={title}>
+    <section class="">
+        <h1>{title}</h1>
     </section>
-</RootLayout>
+</AdminLayout>
