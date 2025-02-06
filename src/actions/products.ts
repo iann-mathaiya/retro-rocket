@@ -22,7 +22,12 @@ export const products = {
             });
 
             try {
-                const response = await stripe.products.list({ active: true });
+                const response = await stripe.products.list({ 
+                    active: true,
+                    expand: ['data.default_price'],
+                });
+
+                console.log(response.data)
 
                 if (!response?.data || !Array.isArray(response.data)) {
                     throw new Error('Invalid response format from Stripe');
@@ -31,12 +36,17 @@ export const products = {
                 const transformedProducts: StripeProduct[] = response.data.map((product) => ({
                     id: product.id,
                     name: product.name,
+                    images: product.images,
+                    active: product.active,
+                    metadata: product.metadata,
                     description: product.description,
                     default_price: typeof product.default_price === 'object' ? 
-                      product.default_price?.id : 
+                    {
+                        unit_price: ((product.default_price?.unit_amount ?? 0) / 100).toFixed(2), 
+                        currency: product.default_price?.currency
+                    }  
+                    : 
                       product.default_price,
-                    images: product.images,
-                    active: product.active
                   }));
 
                 return { success: true, products: transformedProducts };
