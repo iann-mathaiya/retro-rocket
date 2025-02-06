@@ -22,6 +22,17 @@ const title = 'Add New Product'
 ---
 <AdminLayout title={title}>
     <section class="">
-        <h1>{title}</h1>
+        <h1 class="text-base text-gray-900 font-medium">{title}</h1>
+
+        <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="hidden sm:block">
+                <p class="text-gray-600 text-sm">Product preview card goes here</p>
+            </div>
+
+            <form action="" class="space-y-2">
+                <input type="text" placeholder="Product Name" autofocus class="w-full text-lg outline outline-none text-gray-700" />
+                <textarea placeholder="Product Description" class="w-full field-sizing-content text-sm outline outline-none text-gray-700" />
+            </form>
+        </div>
     </section>
 </AdminLayout>
