@@ -21,8 +21,6 @@ if (!user) {
 
 const { data, error } = await Astro.callAction(actions.products.getProducts, null)
 
-console.log('product data:', data)
-
 const title = 'Products'
 ---
 <AdminLayout title={title}>
@@ -32,6 +30,6 @@ const title = 'Products'
             <a href="/add-product" class="text-sm text-gray-600 hover:text-orange-600">Add Product +</a>
         </div>
 
-        <pre>{JSON.stringify(data)}</pre>
+        <pre>{JSON.stringify(data, null, 2)}</pre>
     </section>
 </AdminLayout>
