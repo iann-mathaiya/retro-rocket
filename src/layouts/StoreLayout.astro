@@ -1,0 +1,47 @@
+---
+import Logo from "../assets/logo.svg";
+import RootLayout from "./RootLayout.astro";
+
+const pathname = Astro.url.pathname
+
+const { title, description } = Astro.props;
+---
+
+<RootLayout title={title} description={description}>
+    <section class="w-full min-h-screen bg-gradient-to-br from-[#e4e7e4]/20 to-[#727a9a]/30">
+        <div class="mx-auto w-full max-w-screen-lg">
+            <div class="p-4 flex items-center justify-between gap-4">
+                <div class="flex items-center justify-center gap-4">
+                    <a href="/dashboard">
+                        <Logo width={32} height={32} fill="currentColor" />
+                    </a>
+                    <a href="/products" data-active={pathname === '/products'} class="text-sm text-gray-600  hover:text-orange-600 data-[active=true]:text-orange-600">
+                        Products
+                    </a>
+                    <a href="/blog" data-active={pathname === '/blog'} class="text-sm text-gray-600  hover:text-orange-600 data-[active=true]:text-orange-600">
+                        Blog
+                    </a>
+                    <a href="/about" data-active={pathname === '/about'} class="text-sm text-gray-600  hover:text-orange-600 data-[active=true]:text-orange-600">
+                        About
+                    </a>
+                </div>
+
+                <form action="" class="w-full max-w-md">
+                    <input type="text" placeholder="Search products..."
+                        class="px-2.5 py-1.5 w-full text-sm bg-gray-200 border border-gray-300 rounded-lg outline outline-none active:outline-gray-600 focus:outline-gray-600" />
+                </form>
+
+                <div class="flex items-center justify-center gap-4">
+                    <a href="#" data-active={pathname === '#'} class="text-sm text-gray-600  hover:text-orange-600 data-[active=true]:text-orange-600">
+                        Need help shopping?
+                    </a>
+                    <a href="/cart" data-active={pathname === '/cart'} class="text-sm text-gray-600  hover:text-orange-600 data-[active=true]:text-orange-600">
+                        Cart
+                    </a>
+                </div>
+            </div>
+
+            <slot />
+        </div>
+    </section>
+</RootLayout>
