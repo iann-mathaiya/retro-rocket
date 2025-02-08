@@ -1,12 +1,19 @@
 ---
+import { actions } from "astro:actions";
 import StoreLayout from "../../layouts/StoreLayout.astro";
 
 const { slug } = Astro.params;
+
+if (!slug) {
+    return new Response('Product not found', { status: 404 });
+}
+
+const { data, error } = await Astro.callAction(actions.products.getProduct,{ productId: slug });
 
 ---
 
 <StoreLayout>
   <section class="px-4">
-    {slug}
+    <pre>{JSON.stringify(data, null, 2)}</pre>
   </section>
 </StoreLayout>
