@@ -1,0 +1,19 @@
+---
+import CartList from "../../components/cart-list";
+import StoreLayout from "../../layouts/StoreLayout.astro";
+
+---
+
+<StoreLayout title='Cart'>
+    <section class="px-4">
+        <h1 class="mt-8 text-4xl text-gray-900 font-semibold">
+            Review your cart
+        </h1>
+
+        <p class="mt-2 text-sm text-gray-600">
+            Free delivery and free returns on orders placed on February 29th.
+        </p>
+
+        <CartList client:load />
+    </section>
+</StoreLayout>

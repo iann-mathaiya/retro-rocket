@@ -20,7 +20,7 @@ if (!product) {
 
 ---
 
-<StoreLayout>
+<StoreLayout title={product.name} description={product.description}>
   <section class="px-4 pb-12" transition:animate={fade({ duration: '0.6s' })}>
     <img src={product.images[0]} alt={product.name} class="mx-auto w-full max-w-lg" />
 
