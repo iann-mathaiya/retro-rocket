@@ -1,6 +1,7 @@
 ---
 import Logo from "../assets/logo.svg";
 import RootLayout from "./RootLayout.astro";
+import CartLink from "../components/cart-link";
 
 const pathname = Astro.url.pathname
 
@@ -35,9 +36,8 @@ const { title, description } = Astro.props;
                     <a href="#" data-active={pathname === '#'} class="hidden sm:block text-sm text-gray-600  hover:text-orange-600 data-[active=true]:text-orange-600">
                         Need help shopping?
                     </a>
-                    <a href="/cart" data-active={pathname === '/cart'} class="text-sm text-gray-600  hover:text-orange-600 data-[active=true]:text-orange-600">
-                        Cart
-                    </a>
+                    <CartLink pathname={pathname} client:load />
+                    
                 </div>
             </div>
 

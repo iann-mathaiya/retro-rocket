@@ -7,10 +7,6 @@ import { useEffect } from 'react';
 export default function AddToCartButton({ product, }: { product: StripeProduct; }) {
   const [cart, setCart] = useAtom(cartAtom);
 
-  useEffect(() => {
-    setCart(JSON.parse(localStorage.getItem("cart") || "[]"));
-  }, [setCart]);
-
   function addToCart() {
     const { id, name, images, default_price } = product;
 
@@ -29,8 +25,6 @@ export default function AddToCartButton({ product, }: { product: StripeProduct; 
     setCart(updatedCart);
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   }
-
-  console.log('cart', cart);
 
   return (
     <button type='button' onClick={addToCart}
