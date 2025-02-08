@@ -1,0 +1,12 @@
+---
+import StoreLayout from "../../layouts/StoreLayout.astro";
+
+const { slug } = Astro.params;
+
+---
+
+<StoreLayout>
+  <section class="px-4">
+    {slug}
+  </section>
+</StoreLayout>

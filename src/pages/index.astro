@@ -29,17 +29,19 @@ const { data, error } = await Astro.callAction(
       {
         data?.products?.map((product) => (
           <li>
-            <img src={product.images[0]} alt={`${product.name}`} class="w-full aspect-square object-cover object-center" />
+            <a href={`/shop/${product.id}`} class="group">
+              <img src={product.images[0]} alt={`${product.name}`} class="w-full aspect-square object-cover object-center" />
 
-            <div class="mt-1 px-1 flex items-center justify-between">
-              <h1 class="text-sm text-gray-600">{product.name}</h1>
+              <div class="mt-1 px-1 flex items-center justify-between">
+                <h1 class="text-sm text-gray-600">{product.name}</h1>
 
-              <h2 class="text-sm text-gray-900">
-                {typeof product.default_price === "object"
-                  ? product.default_price?.unit_price
-                  : product.default_price}
-              </h2>
-            </div>
+                <h2 class="text-sm text-gray-900 group-hover:text-orange-600">
+                  {typeof product.default_price === "object"
+                    ? product.default_price?.unit_price
+                    : product.default_price}
+                </h2>
+              </div>
+            </a>
           </li>
         ))
       }
