@@ -15,6 +15,7 @@ export type StripeProduct = {
 export type CartItem = {
   id: string;
   name: string;
+  price: number;
   imageSrc: string;
   quantity: number;
 };

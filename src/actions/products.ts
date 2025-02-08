@@ -1,7 +1,7 @@
 import Stripe from "stripe";
 import { defineAction } from "astro:actions";
 import { z } from "astro:schema";
-import type { StripeProduct } from "../utils/types";
+import type { StripeProduct } from "../lib/types";
 
 export const products = {
     addNewProduct: defineAction({
