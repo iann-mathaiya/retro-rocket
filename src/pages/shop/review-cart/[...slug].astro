@@ -1,0 +1,26 @@
+---
+import { actions } from "astro:actions";
+import StoreLayout from "../../../layouts/StoreLayout.astro";
+import ReviewCartCard from "../../../components/review-cart-card";
+
+const { slug } = Astro.params;
+
+if (!slug) {
+    return new Response('Product not found', { status: 404 });
+}
+
+const { data, error } = await Astro.callAction(actions.products.getProduct,{ productId: slug });
+
+const product = data?.product
+
+if (!product) {
+    return new Response('Product not found', { status: 404 });
+}
+
+---
+
+<StoreLayout title={`Review Cart | ${product.name}`} description={product.description}>
+    <section class="px-4">
+        <pre>{JSON.stringify(product, null, 2)}</pre>
+    </section>
+</StoreLayout>

@@ -1,8 +1,10 @@
 import { useAtom } from 'jotai';
-import { cartAtom } from '../lib/store';
-import type { StripeProduct } from '../lib/types';
+import { navigate } from 'astro:transitions/client';
+import { cartAtom, newItemInCartAtom } from '../lib/store';
+import type { CartItem, StripeProduct } from '../lib/types';
+import { useEffect, useState } from 'react';
 
-export default function AddToCartButton({ product, }: { product: StripeProduct; }) {
+export default function AddToCartButton({ product }: { product: StripeProduct; }) {
   const [cart, setCart] = useAtom(cartAtom);
 
   function addToCart() {
@@ -14,20 +16,30 @@ export default function AddToCartButton({ product, }: { product: StripeProduct; 
     if (existingItem) {
       existingItem.quantity += 1;
     } else {
-      updatedCart.push({
-        id, name, imageSrc: images[0], quantity: 1,
+
+      const newItem: CartItem = {
+        id: id,
+        name: name,
+        quantity: 1,
+        imageSrc: images[0],
         price: typeof default_price === 'object' ? Number.parseInt(String(default_price?.unit_price ?? '0')) : (default_price ?? 0),
-      });
+      }
+
+      updatedCart.push(newItem);
     }
 
     setCart(updatedCart);
     localStorage.setItem("cart", JSON.stringify(updatedCart));
+
+    navigate(`/shop/review-cart/${product.id}`);
+
   }
 
   return (
-    <button type='button' onClick={addToCart}
-      className="mt-2 w-fit py-2 px-8 min-h-8 flex items-center justify-center gap-2 text-white bg-gray-950 hover:bg-orange-600 hover:cursor-pointer hover:scale-110 rounded-full transition-all duration-500 ease-in-out"
-    >
+    <button
+      type='button'
+      onClick={addToCart}
+      className="mt-2 w-fit py-2 px-8 min-h-8 flex items-center justify-center gap-2 text-white bg-gray-950 hover:bg-orange-600 hover:cursor-pointer hover:scale-110 rounded-full transition-all duration-500 ease-in-out">
       Add to cart
     </button>
   );
