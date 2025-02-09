@@ -27,6 +27,12 @@ export default function CartList() {
         }
     }
 
+    function removeItem(itemId: string) {
+        const updatedCart = cart.filter(item => item.id !== itemId);
+        setCart(updatedCart);
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+    }
+
     return (
         <ul className='w-full max-w-2xl'>
             {cart.map((item) => (
@@ -59,7 +65,7 @@ export default function CartList() {
                                 </button>
                             </div>
 
-                            <button type="button" className="text-sm text-gray-600  hover:text-red-600 hover:cursor-pointer">
+                            <button type="button" onClick={() => removeItem(item.id)} className="text-sm text-gray-600  hover:text-red-600 hover:cursor-pointer">
                                 Remove
                             </button>
                         </div>
