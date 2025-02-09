@@ -1,8 +1,6 @@
 import { useAtom } from 'jotai';
 import { cartAtom } from '../lib/store';
 import type { StripeProduct } from '../lib/types';
-import { useEffect } from 'react';
-
 
 export default function AddToCartButton({ product, }: { product: StripeProduct; }) {
   const [cart, setCart] = useAtom(cartAtom);
