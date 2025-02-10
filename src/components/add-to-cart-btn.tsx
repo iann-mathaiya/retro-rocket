@@ -15,6 +15,7 @@ export default function AddToCartButton({ product }: { product: StripeProduct; }
 
     if (existingItem) {
       existingItem.quantity += 1;
+      existingItem.totalPrice = (existingItem.price as number) * existingItem.quantity;
     } else {
 
       const newItem: CartItem = {
@@ -23,6 +24,7 @@ export default function AddToCartButton({ product }: { product: StripeProduct; }
         quantity: 1,
         imageSrc: images[0],
         price: typeof default_price === 'object' ? Number.parseInt(String(default_price?.unit_price ?? '0')) : (default_price ?? 0),
+        totalPrice: typeof default_price === 'object' ? Number.parseInt(String(default_price?.unit_price ?? '0')) : (default_price ?? 0),
       }
 
       updatedCart.push(newItem);

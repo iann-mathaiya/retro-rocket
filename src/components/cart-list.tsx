@@ -1,18 +1,15 @@
 import { useAtom } from 'jotai';
-import { useState } from 'react';
 import { cartAtom } from '../lib/store';
 
 export default function CartList() {
     const [cart, setCart] = useAtom(cartAtom);
-    const [quantity, setQuantity] = useState(1);
 
     function updateQuantity(itemId: string, newQuantity: number) {
         if (newQuantity < 1) return;
-        setQuantity(newQuantity);
 
         const updatedCart = cart.map((cartItem) =>
             cartItem.id === itemId
-                ? { ...cartItem, quantity: newQuantity }
+                ? { ...cartItem, quantity: newQuantity, totalPrice: newQuantity * (cartItem.price as number) }
                 : cartItem
         );
 
@@ -42,7 +39,9 @@ export default function CartList() {
                     <div className='w-full'>
                         <div className='sm:mt-10 w-full flex justify-between'>
                             <h1 className="text-xl text-gray-900 font-medium">{item.name}</h1>
-                            <p className="text-xl text-gray-900 font-medium">${item.price}.00</p>
+                            <p className="text-xl text-gray-900 font-medium">
+                                ${item.totalPrice}.00
+                            </p>
                         </div>
 
                         <div className='mt-3 flex items-center gap-4'>

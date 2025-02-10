@@ -18,4 +18,5 @@ export type CartItem = {
   imageSrc: string;
   quantity: number;
   price: number | string;
+  totalPrice: number | string;
 };
