@@ -1,9 +1,10 @@
-import { useAtom } from 'jotai';
+import { useAtomValue } from 'jotai';
 import { cartAtom } from '../lib/store';
-import React, { useEffect, useState } from 'react';
+import { actions } from 'astro:actions';
+import { useEffect, useState } from 'react';
 
-export default function ProceedToCheckoutCard() {
-    const [cart, setCart] = useAtom(cartAtom);
+export default function OrderSummaryCard() {
+    const cart = useAtomValue(cartAtom);
     const [subTotal, setSubTotal] = useState(0);
     const [discount, setDiscount] = useState(0);
 
@@ -11,6 +12,21 @@ export default function ProceedToCheckoutCard() {
         const subTotal = cart.reduce((acc, item) => acc + (item.price as number) * item.quantity, 0);
         setSubTotal(subTotal);
     }, [cart]);
+
+    const lineItems = cart.map((item) => ({
+        priceId: item.id,
+        quantity: item.quantity
+    }));
+
+    async function handleCheckout() {
+        const { data, error } = await actions.checkout.createCheckoutSession({
+            lineItems,
+            successUrl: `${window.location.origin}/success`,
+            cancelUrl: `${window.location.origin}/cart`,
+        });
+
+        console.log({data, error});
+    }
 
     return (
         <div className='mt-10 h-fit w-full'>
@@ -33,7 +49,7 @@ export default function ProceedToCheckoutCard() {
                 </p>
             </div>
 
-            <button type="button" className='mt-4 w-full py-2 px-8 min-h-8 flex items-center justify-center gap-2 text-white bg-gray-950 hover:bg-orange-600 hover:cursor-pointer rounded-full transition-all duration-500 ease-in-out'>
+            <button type="button" onClick={handleCheckout} className='mt-4 w-full py-2 px-8 min-h-8 flex items-center justify-center gap-2 text-white bg-gray-950 hover:bg-orange-600 hover:cursor-pointer rounded-full transition-all duration-500 ease-in-out'>
                 Proceed to checkout
             </button>
         </div>

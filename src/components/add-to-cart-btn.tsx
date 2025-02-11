@@ -23,6 +23,7 @@ export default function AddToCartButton({ product }: { product: StripeProduct; }
         name: name,
         imageSrc: images[0],
         quantity: INITIAL_QUANTITY,
+        priceId: typeof default_price === 'object' ? default_price?.id ?? '' : '',
         price: typeof default_price === 'object' ? Number.parseInt(String(default_price?.unit_price ?? '0')) : (default_price ?? 0),
         totalPrice: typeof default_price === 'object' ? Number.parseInt(String(default_price?.unit_price ?? '0')) : (default_price ?? 0),
       }

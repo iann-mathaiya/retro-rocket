@@ -1,11 +1,12 @@
 import { useAtom } from 'jotai';
 import { cartAtom } from '../lib/store';
-import { useEffect, useState } from 'react';
 import QuantityCounter from './quantity-counter';
-import ProceedToCheckoutCard from './proceed-to-checkout-card';
+import OrderSummaryCard from './order-summary-card';
 
 export default function CartList() {
     const [cart, setCart] = useAtom(cartAtom);
+
+    console.log(cart)
 
     function removeItem(itemId: string) {
         const updatedCart = cart.filter(item => item.id !== itemId);
@@ -41,7 +42,7 @@ export default function CartList() {
                 ))}
             </ul>
 
-            <ProceedToCheckoutCard />
+            <OrderSummaryCard />
 
         </div>
     );
