@@ -27,7 +27,7 @@ export const checkout = {
                     success_url: successUrl,
                     cancel_url: cancelUrl,
                 });
-                
+
                 return { success: true, session: {id: session.id, url: session.url} };
 
             } catch (error) {

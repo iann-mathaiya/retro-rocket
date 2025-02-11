@@ -23,8 +23,10 @@ export default function OrderSummaryCard() {
         const { data, error } = await actions.checkout.createCheckoutSession({
             lineItems,
             successUrl: `${window.location.origin}/success`,
-            cancelUrl: `${window.location.origin}/cart`,
+            cancelUrl: `${window.location.origin}/shop/cart`,
         });
+
+        window.location.href = data?.session?.url as string
 
         console.log({data, error});
     }
