@@ -27,8 +27,6 @@ export const products = {
                     expand: ['data.default_price'],
                 });
 
-                console.log(response.data);
-
                 if (!response?.data || !Array.isArray(response.data)) {
                     throw new Error('Invalid response format from Stripe');
                 }

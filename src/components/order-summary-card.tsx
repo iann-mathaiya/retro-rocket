@@ -2,6 +2,7 @@ import { useAtomValue } from 'jotai';
 import { cartAtom } from '../lib/store';
 import { actions } from 'astro:actions';
 import { useEffect, useState } from 'react';
+import { navigate } from 'astro:transitions/client';
 
 export default function OrderSummaryCard() {
     const cart = useAtomValue(cartAtom);
@@ -14,7 +15,7 @@ export default function OrderSummaryCard() {
     }, [cart]);
 
     const lineItems = cart.map((item) => ({
-        priceId: item.id,
+        price: item.priceId,
         quantity: item.quantity
     }));
 
