@@ -2,6 +2,7 @@ import Stripe from "stripe";
 import { defineAction } from "astro:actions";
 import { z } from "astro:schema";
 import type { StripeProduct } from "../lib/types";
+import { stripe } from "../lib/constants";
 
 export const products = {
     addNewProduct: defineAction({
@@ -15,11 +16,6 @@ export const products = {
     }),
     getProducts: defineAction({
         handler: async () => {
-
-            const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY, {
-                apiVersion: '2025-01-27.acacia',
-                httpClient: Stripe.createFetchHttpClient()
-            });
 
             try {
                 const response = await stripe.products.list({
@@ -61,11 +57,6 @@ export const products = {
             productId: z.string()
         }),
         handler: async ({ productId }) => {
-
-            const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY, {
-                apiVersion: '2025-01-27.acacia',
-                httpClient: Stripe.createFetchHttpClient()
-            });
 
             try {
                 const product = await stripe.products.retrieve(productId, {

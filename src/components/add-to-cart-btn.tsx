@@ -1,8 +1,8 @@
 import { useAtom } from 'jotai';
+import { cartAtom } from '../lib/store';
 import { navigate } from 'astro:transitions/client';
-import { cartAtom, newItemInCartAtom } from '../lib/store';
+import { INITIAL_QUANTITY } from '../lib/constants';
 import type { CartItem, StripeProduct } from '../lib/types';
-import { useEffect, useState } from 'react';
 
 export default function AddToCartButton({ product }: { product: StripeProduct; }) {
   const [cart, setCart] = useAtom(cartAtom);
@@ -21,8 +21,8 @@ export default function AddToCartButton({ product }: { product: StripeProduct; }
       const newItem: CartItem = {
         id: id,
         name: name,
-        quantity: 1,
         imageSrc: images[0],
+        quantity: INITIAL_QUANTITY,
         price: typeof default_price === 'object' ? Number.parseInt(String(default_price?.unit_price ?? '0')) : (default_price ?? 0),
         totalPrice: typeof default_price === 'object' ? Number.parseInt(String(default_price?.unit_price ?? '0')) : (default_price ?? 0),
       }
