@@ -8,6 +8,7 @@ export default function OrderSummaryCard() {
     const cart = useAtomValue(cartAtom);
     const [subTotal, setSubTotal] = useState(0);
     const [discount, setDiscount] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const subTotal = cart.reduce((acc, item) => acc + (item.price as number) * item.quantity, 0);
@@ -20,6 +21,8 @@ export default function OrderSummaryCard() {
     }));
 
     async function handleCheckout() {
+        setIsLoading(true);
+
         const { data, error } = await actions.checkout.createCheckoutSession({
             lineItems,
             successUrl: `${window.location.origin}/success`,
@@ -27,6 +30,7 @@ export default function OrderSummaryCard() {
         });
 
         window.location.href = data?.session?.url as string
+        setIsLoading(false);
 
         console.log({data, error});
     }
@@ -52,8 +56,8 @@ export default function OrderSummaryCard() {
                 </p>
             </div>
 
-            <button type="button" onClick={handleCheckout} className='mt-4 w-full py-2 px-8 min-h-8 flex items-center justify-center gap-2 text-white bg-gray-950 hover:bg-orange-600 hover:cursor-pointer rounded-full transition-all duration-500 ease-in-out'>
-                Proceed to checkout
+            <button type="button" onClick={handleCheckout} disabled={isLoading} className='mt-4 w-full py-2 px-8 min-h-8 flex items-center justify-center gap-2 text-white bg-gray-950 hover:bg-orange-600 disabled:hover:bg-gray-900 disabled:opacity-50 hover:cursor-pointer disabled:cursor-not-allowed rounded-full transition-all duration-500 ease-in-out'>
+                {isLoading ? 'Processing...' : 'Proceed to checkout'}
             </button>
         </div>
     );
