@@ -1,0 +1,12 @@
+---
+import StoreLayout from "../layouts/StoreLayout.astro";
+
+const searchQuery = Astro.url.searchParams.get('q') || '';
+---
+
+<StoreLayout>
+    <section class="px-4">
+        <h1 class="mt-8 text-2xl font-semibold text-gray-900">Search results for "{searchQuery}"</h1>
+        
+    </section>
+</StoreLayout>
