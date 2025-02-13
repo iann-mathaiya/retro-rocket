@@ -3,29 +3,35 @@ import { actions } from "astro:actions";
 import StoreLayout from "../layouts/StoreLayout.astro";
 import ProductCard from "../components/product-card.astro";
 
-const searchQuery = Astro.url.searchParams.get('q') || '';
+const searchQuery = Astro.url.searchParams.get("q") || "";
 
-const { data, error } = await Astro.callAction(
-  actions.search.searchProducts,    
-  { query: searchQuery },
-);
+const { data, error } = await Astro.callAction(actions.search.searchProducts, {
+  query: searchQuery,
+});
+
+const products = data?.products || [];
 ---
 
 <StoreLayout>
-    <section class="px-4">
-        <h1 class="mt-8 text-2xl font-semibold text-gray-900">Search results for "{searchQuery}"</h1>
+  <section class="px-4">
+    <h1 class="mt-8 text-2xl font-semibold text-gray-900">
+      Search results for "{searchQuery}"
+    </h1>
 
+    {
+      products.length > 0 ? (
         <ul class="grid grid-cols-2 lg:grid-cols-3 gap-4">
-          {
-            data?.products?.map((product) => (
-              <li>
-                <ProductCard product={product} href={`/shop/${product.id}`} />
-              </li>
-            ))
-          }
+          {products.map((product) => (
+            <li>
+              <ProductCard product={product} href={`/shop/${product.id}`} />
+            </li>
+          ))}
         </ul>
-
-        <pre>{JSON.stringify(data, null, 2)}</pre>
-        
-    </section>
+      ) : (
+        <p class="mt-4 text-gray-600 text-balance">
+          Sorry, we couldn&rsquo;t find any results for your search: <span class="text-gray-900 font-semibold underline">{searchQuery}</span>. We may not have this product, or there could be a typo—try adjusting your search and checking again!
+          </p>
+      )
+    }
+  </section>
 </StoreLayout>
