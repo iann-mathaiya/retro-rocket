@@ -1,0 +1,25 @@
+---
+const { product, href } = Astro.props;
+---
+
+<a href={href} class="group">
+    <img
+        src={product.images[0]}
+        alt={`${product.name}`}
+        class="w-full aspect-square object-cover object-center group-hover:scale-110 transition-all duration-500 ease-in-out"
+    />
+
+    <div class="mt-1 px-1 flex items-center justify-between">
+        <h1 class="text-sm text-gray-600 group-hover:text-gray-800">
+            {product.name}
+        </h1>
+
+        <h2 class="text-sm text-gray-900 group-hover:text-gray-950">
+            ${
+                typeof product.default_price === "object"
+                    ? product.default_price?.unit_price
+                    : product.default_price
+            }
+        </h2>
+    </div>
+</a>
