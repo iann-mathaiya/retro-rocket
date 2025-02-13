@@ -32,12 +32,7 @@ export const products = {
                 }
 
                 const transformedProducts: StripeProduct[] = response.data.map((product) => ({
-                    id: product.id,
-                    name: product.name,
-                    images: product.images,
-                    active: product.active,
-                    metadata: product.metadata,
-                    description: product.description,
+                    ...product,
                     default_price: typeof product.default_price === 'object' ?
                         {
                             id: product.default_price?.id,
