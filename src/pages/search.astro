@@ -17,6 +17,11 @@ const products = data?.products || [];
     <h1 class="mt-8 text-2xl font-semibold text-gray-900">
       Search results for "{searchQuery}"
     </h1>
+    {products.length > 0 && (
+      <p class="mt-1 text-sm text-gray-600 text-balance">
+        Found {products.length} relevant product{products.length === 1 ? "" : "s"}
+      </p>
+    )}
 
     {
       products.length > 0 ? (
@@ -28,9 +33,14 @@ const products = data?.products || [];
           ))}
         </ul>
       ) : (
-        <p class="mt-4 text-gray-600 text-balance">
-          Sorry, we couldn&rsquo;t find any results for your search: <span class="text-gray-900 font-semibold underline">{searchQuery}</span>. We may not have this product, or there could be a typo—try adjusting your search and checking again!
-          </p>
+        <p class="mt-4 text-base text-gray-600 text-balance">
+          Sorry, we couldn&rsquo;t find any results for your search:{" "}
+          <span class="text-gray-900 font-semibold underline">
+            {searchQuery}
+          </span>
+          . We may not have this product, or there could be a typo—try adjusting
+          your search and checking again!
+        </p>
       )
     }
   </section>
