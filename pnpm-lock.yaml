@@ -23,6 +23,9 @@ importers:
       astro:
         specifier: ^5.2.3
         version: 5.2.3(@types/node@22.13.1)(jiti@2.4.2)(lightningcss@1.29.1)(rollup@4.34.0)(typescript@5.7.3)
+      astro-loading-indicator:
+        specifier: ^0.7.0
+        version: 0.7.0(astro@5.2.3(@types/node@22.13.1)(jiti@2.4.2)(lightningcss@1.29.1)(rollup@4.34.0)(typescript@5.7.3))
       firebase:
         specifier: ^11.2.0
         version: 11.2.0
@@ -1094,6 +1097,11 @@ packages:
   arrify@2.0.1:
     resolution: {integrity: sha512-3duEwti880xqi4eAMN8AyR4a0ByT90zoYdLlevfrvU43vb0YZwZVfxOgxWrLXXXpyugL0hNZc9G6BiB5B3nUug==}
     engines: {node: '>=8'}
+
+  astro-loading-indicator@0.7.0:
+    resolution: {integrity: sha512-oNSUYbHq8Aaol0zcVuBzGz+qrqKsviOvKl1xaaKo3DLkEef7HCzHQAgTgWv4lB1iYFWa5GaieQvlxBO4KjzKZg==}
+    peerDependencies:
+      astro: ^4.0.0 || ^5.0.0
 
   astro@5.2.3:
     resolution: {integrity: sha512-04AceE/gVihtO3V28Ss0+tPPgLHGoulXrm1E7fUVPYyQu7y6w8+oXfYyzh1lpy+uEYiebjH7AFlJoz73anBmZA==}
@@ -3785,6 +3793,10 @@ snapshots:
 
   arrify@2.0.1:
     optional: true
+
+  astro-loading-indicator@0.7.0(astro@5.2.3(@types/node@22.13.1)(jiti@2.4.2)(lightningcss@1.29.1)(rollup@4.34.0)(typescript@5.7.3)):
+    dependencies:
+      astro: 5.2.3(@types/node@22.13.1)(jiti@2.4.2)(lightningcss@1.29.1)(rollup@4.34.0)(typescript@5.7.3)
 
   astro@5.2.3(@types/node@22.13.1)(jiti@2.4.2)(lightningcss@1.29.1)(rollup@4.34.0)(typescript@5.7.3):
     dependencies:

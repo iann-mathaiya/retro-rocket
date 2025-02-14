@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import { Provider } from "jotai";
 import { ClientRouter } from "astro:transitions";
+import LoadingIndicator from "astro-loading-indicator/component";
 
 const { title, description } = Astro.props;
 ---
@@ -16,6 +17,7 @@ const { title, description } = Astro.props;
 		<meta name="description" content={description} />
 		<meta name="generator" content={Astro.generator} />
 		<ClientRouter />
+		<LoadingIndicator color="orange" height="4px" />
 	</head>
 	<Provider>
 		<body class="bg-white">
