@@ -12,19 +12,23 @@ export default function CheckoutForm() {
     quantity: item.quantity
   }));
 
-  async function handleCheckout() {
+  async function handleCheckout(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
     setIsLoading(true);
 
-    const { data, error } = await actions.checkout.createCheckoutSession({
-      lineItems,
-      successUrl: `${window.location.origin}/shop/review-order`,
-      cancelUrl: `${window.location.origin}/shop/cart`,
-    });
+    const formData = new FormData(event.currentTarget);
+    const { error } = await actions.checkout.saveShippingInformation(formData)
 
-    window.location.href = data?.session?.url as string;
-    setIsLoading(false);
+    // const { data, error } = await actions.checkout.createCheckoutSession({
+    //   lineItems,
+    //   successUrl: `${window.location.origin}/shop/review-order`,
+    //   cancelUrl: `${window.location.origin}/shop/cart`,
+    // });
 
-    console.log({ data, error });
+    // window.location.href = data?.session?.url as string;
+    // setIsLoading(false);
+
+    // console.log({ data, error });
   }
   return (
     <>

@@ -3,6 +3,23 @@ import { defineAction } from "astro:actions";
 import Stripe from "stripe";
 
 export const checkout = {
+    saveShippingInformation: defineAction({
+        accept: 'form',
+        input: z.object({
+            name: z.string(),
+            city: z.string(),
+            address: z.string(),
+            country: z.string(),
+            email: z.string().email(),
+            zip: z.string().optional(),
+        }),
+        handler: async (input, context) => {
+            // Save the shipping information to the database
+
+            console.log(input)
+            return { success: true };
+        }
+    }),
     createCheckoutSession: defineAction({
         input: z.object({
             lineItems: z.array(z.object({
