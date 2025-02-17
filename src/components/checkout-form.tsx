@@ -1,6 +1,7 @@
-import { actions } from 'astro:actions';
+import type React from 'react';
+import { useState } from 'react';
 import { useAtomValue } from 'jotai';
-import React, { useState } from 'react';
+import { actions } from 'astro:actions';
 import { cartAtom } from '../lib/store';
 
 export default function CheckoutForm() {

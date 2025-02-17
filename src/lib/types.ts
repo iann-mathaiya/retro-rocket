@@ -22,3 +22,16 @@ export type CartItem = {
   price: number | string;
   totalPrice: number | string;
 };
+
+export type ShippingInfo = {
+  firstName: string;
+  lastName: string;
+  address1: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  country: string;
+  phone: string;
+  email: string;
+  createdAt: Date;
+}
