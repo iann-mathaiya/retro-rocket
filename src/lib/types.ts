@@ -26,12 +26,12 @@ export type CartItem = {
 export type ShippingInfo = {
   firstName: string;
   lastName: string;
-  address1: string;
+  email: string;
+  country: string;
+  address: string;
   city: string;
   state: string;
   zipCode: string;
-  country: string;
   phone: string;
-  email: string;
   createdAt: Date;
 }
