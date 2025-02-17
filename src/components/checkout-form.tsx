@@ -1,5 +1,5 @@
 import type React from 'react';
-import { useState } from 'react';
+import { useState, type InputHTMLAttributes } from 'react';
 import { useAtomValue } from 'jotai';
 import { actions } from 'astro:actions';
 import { cartAtom } from '../lib/store';
@@ -45,20 +45,16 @@ export default function CheckoutForm() {
       <div className='pb-12 w-full grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8'>
         <form className='sm:col-span-2 w-full mt-4 space-y-4' onSubmit={handleCheckout}>
           <div className='w-full flex items-center gap-4'>
-            <div className='w-full flex flex-col space-y-1'>
-              <label htmlFor='name' className='text-xs text-gray-600'>First Name</label>
-              <input type='text' id='name' name='name' className='w-full py-2 px-2.5 text-sm text-gray-900 font-medium border border-gray-400/35 rounded-md' />
-            </div>
-
+            <FormInput label='First Name' name='firstName' />
             <FormInput label='Last Name' name='lastName' />
-
           </div>
 
           <FormInput label='Email' name='email' type='email' />
 
           <div className='flex flex-col space-y-1'>
             <label htmlFor='country' className='text-xs text-gray-600'>Country</label>
-            <select id='country' name='country' className='w-full py-2 px-2.5 text-sm text-gray-900 font-medium border border-gray-400/35 rounded-md'>
+            <select id='country' name='country' 
+              className='w-full py-2 px-2.5 text-sm text-gray-900 font-medium border border-gray-400/35 focus:border-orange-500 rounded-md focus:outline-[2.5px] focus:outline-orange-500/20'>
               <option value=''>Select a country</option>
               {countries.map((country) =>
                 <option key={country.code} value={country.code}>{country.name}</option>
@@ -88,17 +84,18 @@ export default function CheckoutForm() {
 type FormInputProps = {
   label: string;
   name: string;
-  type?: string;
-  required?: boolean;
-  disabled?: boolean;
-};
+} & Omit<InputHTMLAttributes<HTMLInputElement>, 'name'>;
 
-function FormInput({ label, name, required, disabled, type = 'text' }: FormInputProps) {
+function FormInput({ label, name, className = '', ...props }: FormInputProps) {
   return (
     <div className='w-full flex flex-col space-y-1'>
       <label htmlFor={name} className='text-xs text-gray-600'>{label}</label>
-      <input type={type} id={name} name={name} required={required} disabled={disabled} 
-        className='w-full py-2 px-2.5 text-sm text-gray-900 font-medium border border-gray-400/35 rounded-md' />
+      <input
+        id={name}
+        name={name}
+        {...props}
+        className={`w-full py-2 px-2.5 text-sm text-gray-900 font-medium border border-gray-400/35 focus:border-orange-500 rounded-md focus:outline-[2.5px] focus:outline-orange-500/20 ${className}`}
+      />
     </div>
   );
 }
