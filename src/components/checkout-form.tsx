@@ -54,7 +54,7 @@ export default function CheckoutForm() {
           <div className='flex flex-col space-y-1'>
             <label htmlFor='country' className='text-xs text-gray-600'>Country</label>
             <select id='country' name='country' 
-              className='w-full py-2 px-2.5 text-sm text-gray-900 font-medium border border-gray-400/35 focus:border-orange-500 rounded-md focus:outline-[2.5px] focus:outline-orange-500/20'>
+              className='w-full px-2.5 py-1.5 text-sm text-gray-900 border border-gray-400/35 focus:border-orange-300 rounded-lg focus:outline-[2.5px] focus:outline-orange-500/20'>
               <option value=''>Select a country</option>
               {countries.map((country) =>
                 <option key={country.code} value={country.code}>{country.name}</option>
@@ -94,7 +94,7 @@ function FormInput({ label, name, className = '', ...props }: FormInputProps) {
         id={name}
         name={name}
         {...props}
-        className={`w-full py-2 px-2.5 text-sm text-gray-900 font-medium border border-gray-400/35 focus:border-orange-500 rounded-md focus:outline-[2.5px] focus:outline-orange-500/20 ${className}`}
+        className={`w-full px-2.5 py-1.5 text-sm text-gray-900 border border-gray-400/35 focus:border-orange-300 focus:outline-[2.5px] focus:outline-orange-500/20 rounded-lg ${className}`}
       />
     </div>
   );

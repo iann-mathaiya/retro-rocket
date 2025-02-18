@@ -27,7 +27,7 @@ export default function SearchInput() {
             <input type="text" placeholder="Search products..." value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={handleKeyDown}
-                className="px-2.5 py-1.5 w-full text-sm bg-gray-200 border border-gray-300 rounded-lg outline outline-transparent focus:outline-gray-600" />
+                className="px-2.5 py-1.5 w-full text-sm bg-gray-200 focus:bg-orange-600/5 border border-gray-300 focus:border-orange-300 rounded-lg focus:outline-[2.5px] focus:outline-orange-500/20" />
 
             {query &&
                 <button type="button" onClick={clearSearchQuery} className="absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-500 hover:text-gray-800 hover:cursor-pointer">
