@@ -1,12 +1,13 @@
 import type React from 'react';
 import { useState, type InputHTMLAttributes } from 'react';
-import { useAtomValue } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { actions } from 'astro:actions';
-import { cartAtom } from '../lib/store';
+import { cartAtom, shippingInfoIdAtom } from '../lib/store';
 import { countries } from '../lib/utils';
 
 export default function CheckoutForm() {
   const cart = useAtomValue(cartAtom);
+
   const [isLoading, setIsLoading] = useState(false);
 
   const lineItems = cart.map((item) => ({
@@ -19,22 +20,21 @@ export default function CheckoutForm() {
     setIsLoading(true);
 
     const formData = new FormData(event.currentTarget);
-    const { data, error } = await actions.checkout.saveShippingInformation(formData);
+    const { data: shippingInfoData, error } = await actions.checkout.saveShippingInformation(formData);
 
-    if(data?.success) {
-      
+    if(shippingInfoData?.success) {
+      localStorage.setItem("shipping-info-id", shippingInfoData.shippingInfoId);
+
+      const { data, error } = await actions.checkout.createCheckoutSession({
+        lineItems,
+        successUrl: `${window.location.origin}/shop/review-order`,
+        cancelUrl: `${window.location.origin}/shop/cart`,
+      });
+  
+      window.location.href = data?.session?.url as string;
+      setIsLoading(false);
     }
 
-    // const { data, error } = await actions.checkout.createCheckoutSession({
-    //   lineItems,
-    //   successUrl: `${window.location.origin}/shop/review-order`,
-    //   cancelUrl: `${window.location.origin}/shop/cart`,
-    // });
-
-    // window.location.href = data?.session?.url as string;
-    // setIsLoading(false);
-
-    // console.log({ data, error });
   }
   return (
     <>

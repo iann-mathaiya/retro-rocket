@@ -31,7 +31,7 @@ export const checkout = {
 
             console.log(docRef.id)
 
-            return { success: true, shippingInfo: docRef.id };
+            return { success: true, shippingInfoId: docRef.id };
 
         }
     }),

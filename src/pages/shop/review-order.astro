@@ -1,10 +1,12 @@
 ---
+import OrderReviewCard from "../../components/order-review-card";
 import StoreLayout from "../../layouts/StoreLayout.astro";
+
 ---
 
 
 <StoreLayout title='Review Order'>
     <section class="px-4">
-        
+        <OrderReviewCard client:load />
     </section>
 </StoreLayout>
