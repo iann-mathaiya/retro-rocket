@@ -6,10 +6,13 @@ export const checkout = {
     saveShippingInformation: defineAction({
         accept: 'form',
         input: z.object({
-            name: z.string(),
+            firstName: z.string(),
+            lastName: z.string(),
+            country: z.string(),
+            phone: z.string(),
+            state: z.string(),
             city: z.string(),
             address: z.string(),
-            country: z.string(),
             email: z.string().email(),
             zip: z.string().optional(),
         }),

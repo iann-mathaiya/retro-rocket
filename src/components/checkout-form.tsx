@@ -57,7 +57,7 @@ export default function CheckoutForm() {
               className='w-full px-2.5 py-1.5 text-sm text-gray-900 border border-gray-400/35 focus:border-orange-300 rounded-lg focus:outline-[2.5px] focus:outline-orange-500/20'>
               <option value=''>Select a country</option>
               {countries.map((country) =>
-                <option key={country.code} value={country.code}>{country.name}</option>
+                <option key={country.code} value={country.name}>{country.name}</option>
               )}
             </select>
           </div>
