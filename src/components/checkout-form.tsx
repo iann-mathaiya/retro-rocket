@@ -19,7 +19,11 @@ export default function CheckoutForm() {
     setIsLoading(true);
 
     const formData = new FormData(event.currentTarget);
-    const { error } = await actions.checkout.saveShippingInformation(formData);
+    const { data, error } = await actions.checkout.saveShippingInformation(formData);
+
+    if(data?.success) {
+      
+    }
 
     // const { data, error } = await actions.checkout.createCheckoutSession({
     //   lineItems,

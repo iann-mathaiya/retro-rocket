@@ -29,9 +29,10 @@ export type ShippingInfo = {
   email: string;
   country: string;
   address: string;
-  city: string;
-  state: string;
-  zipCode: string;
+  city?: string;
+  state?: string;
+  zipCode?: string;
   phone: string;
   createdAt: Date;
+  updatedAt: Date;
 }

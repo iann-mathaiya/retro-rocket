@@ -1,6 +1,7 @@
 import { z } from "astro:schema";
 import { defineAction } from "astro:actions";
 import Stripe from "stripe";
+import { db } from "../firebase/server";
 
 export const checkout = {
     saveShippingInformation: defineAction({
@@ -19,8 +20,19 @@ export const checkout = {
         handler: async (input, context) => {
             // Save the shipping information to the database
 
-            console.log(input)
-            return { success: true };
+            const dataToStore = {
+                ...input,
+                createdAt: new Date()
+              };
+
+              console.log(dataToStore)
+
+            const docRef = await db.collection('shipping-info').add(dataToStore);
+
+            console.log(docRef.id)
+
+            return { success: true, shippingInfo: docRef.id };
+
         }
     }),
     createCheckoutSession: defineAction({
@@ -48,7 +60,7 @@ export const checkout = {
                     cancel_url: cancelUrl,
                 });
 
-                return { success: true, session: {id: session.id, url: session.url} };
+                return { success: true, session: { id: session.id, url: session.url } };
 
             } catch (error) {
                 console.error('Error creating checkout session:', error);
@@ -57,4 +69,4 @@ export const checkout = {
 
         }
     })
-}
+};
