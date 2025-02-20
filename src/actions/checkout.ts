@@ -68,5 +68,28 @@ export const checkout = {
             }
 
         }
+    }),
+    retrieveCheckoutSession: defineAction({
+        input: z.object({
+            sessionId: z.string()
+        }),
+        handler: async ({ sessionId }) => {
+
+            const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY, {
+                apiVersion: '2025-01-27.acacia',
+                httpClient: Stripe.createFetchHttpClient()
+            });
+
+            try {
+                const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+                return { success: true, session };
+
+            } catch (error) {
+                console.error('Error retrieving checkout session:', error);
+                return { success: false, message: 'An unexpected error occurred. Please try again.' };
+            }
+
+        }
     })
 };

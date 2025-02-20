@@ -1,9 +1,9 @@
 import type React from 'react';
-import { useState, type InputHTMLAttributes } from 'react';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useAtomValue } from 'jotai';
 import { actions } from 'astro:actions';
-import { cartAtom, shippingInfoIdAtom } from '../lib/store';
+import { cartAtom } from '../lib/store';
 import { countries } from '../lib/utils';
+import { useState, type InputHTMLAttributes } from 'react';
 
 export default function CheckoutForm() {
   const cart = useAtomValue(cartAtom);
