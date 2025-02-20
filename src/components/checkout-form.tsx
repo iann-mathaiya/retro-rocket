@@ -30,6 +30,8 @@ export default function CheckoutForm() {
         successUrl: `${window.location.origin}/shop/review-order`,
         cancelUrl: `${window.location.origin}/shop/cart`,
       });
+
+      localStorage.setItem("stripe-checkout-session-id", data?.session?.id as string);
   
       window.location.href = data?.session?.url as string;
       setIsLoading(false);

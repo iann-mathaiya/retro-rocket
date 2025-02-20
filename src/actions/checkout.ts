@@ -60,6 +60,8 @@ export const checkout = {
                     cancel_url: cancelUrl,
                 });
 
+                console.log('session id:', session.id)
+
                 return { success: true, session: { id: session.id, url: session.url } };
 
             } catch (error) {
@@ -82,6 +84,8 @@ export const checkout = {
 
             try {
                 const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+                console.log('session:', session)
 
                 return { success: true, session };
 
