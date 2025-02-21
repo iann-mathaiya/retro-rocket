@@ -1,3 +1,4 @@
+import type Stripe from "stripe";
 
 export type StripeProduct = {
   id: string;
@@ -35,4 +36,20 @@ export type ShippingInfo = {
   phone: string;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export type GuestCustomerAddress = {
+  city?: string;
+  line1?: string;
+  line2?: string;
+  state?: string;
+  country: string;
+  postal_code?: string;
+}
+
+export type GuestCustomer = {
+  name: string | null;
+  email: string | null;
+  phone: string | null;
+  address: Stripe.Address | null
 }

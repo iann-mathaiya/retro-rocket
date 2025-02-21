@@ -1,12 +1,13 @@
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
-import { shippingInfoIdAtom, stripeCheckoutSessionAtom, stripeCheckoutSessionIdAtom } from '../lib/store';
 import { actions } from 'astro:actions';
+import { shippingInfoIdAtom, stripeCheckoutSessionAtom, stripeCheckoutSessionIdAtom, stripeGuestCustomerAtom } from '../lib/store';
 
 export default function OrderReviewCard() {
     const [shippingInfoId, setShippingInfoId] = useAtom(shippingInfoIdAtom);
     const [stripeCheckoutSessionId, setStripeCheckoutSessionId] = useAtom(stripeCheckoutSessionIdAtom);
     const [stripeCheckoutSession, setStripeCheckoutSession] = useAtom(stripeCheckoutSessionAtom);
+    const [stripeGuestCustomer, setStripeGuestCustomer] = useAtom(stripeGuestCustomerAtom);
 
     useEffect(() => {
         const newShippingInfoId = localStorage.getItem('shipping-info-id') ?? '';
@@ -25,7 +26,19 @@ export default function OrderReviewCard() {
         }
 
         retrieveStripeSession()
-    }, [stripeCheckoutSessionId, setShippingInfoId, setStripeCheckoutSessionId, setStripeCheckoutSession]);
+
+        if(stripeCheckoutSession && (stripeCheckoutSession.customer === null) && stripeCheckoutSession.customer_details) {
+            const guestCustomer = {
+                name: stripeCheckoutSession.customer_details.name,
+                email: stripeCheckoutSession.customer_details.email,
+                phone: stripeCheckoutSession.customer_details.phone,
+                address: stripeCheckoutSession.customer_details.address,
+            }
+
+            setStripeGuestCustomer(guestCustomer);
+
+        }
+    }, [stripeCheckoutSession, stripeCheckoutSessionId, setShippingInfoId, setStripeCheckoutSessionId, setStripeCheckoutSession, setStripeGuestCustomer]);
 
 
     return (
@@ -33,7 +46,7 @@ export default function OrderReviewCard() {
             <p>{shippingInfoId}</p>
             <p>{stripeCheckoutSessionId}</p>
             
-            <pre>{JSON.stringify(stripeCheckoutSession, null, 2)}</pre>
+            <pre>{JSON.stringify(stripeGuestCustomer, null, 2)}</pre>
         </div>
     );
 }
