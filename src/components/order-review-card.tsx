@@ -1,11 +1,13 @@
 import { useAtom } from 'jotai';
-import { useEffect } from 'react';
 import { actions } from 'astro:actions';
+import { useEffect, useState } from 'react';
+import type { LocalOrder } from '../lib/types';
 import { cartAtom, shippingInfoAtom, stripeGuestCustomerAtom } from '../lib/store';
 
 export default function OrderReviewCard() {
     const [cart, setCart] = useAtom(cartAtom);
     const [shippingInfo, setShippingInfo] = useAtom(shippingInfoAtom);
+    const [orderDetails, setOrderDetails] = useState<LocalOrder[] | undefined>(undefined);
     const [stripeGuestCustomer, setStripeGuestCustomer] = useAtom(stripeGuestCustomerAtom);
 
     useEffect(() => {
@@ -59,6 +61,38 @@ export default function OrderReviewCard() {
         initializeCheckoutData();
     }, [setShippingInfo, setStripeGuestCustomer]);
 
+    useEffect(() => {
+        function handleOrderCompletion() {
+            if (!cart || cart.length === 0) {
+                console.log('Cart is empty');
+                return;
+            }
+
+            const existingOrders = JSON.parse(localStorage.getItem('order-items') || '[]');
+
+            const newOrder = {
+                items: cart,
+                orderedAt: new Date().toISOString(),
+                orderId: `order-${Date.now()}`
+            };
+
+            const updatedOrders: LocalOrder[] = [...existingOrders, newOrder];
+
+            localStorage.setItem('order-items', JSON.stringify(updatedOrders));
+            setOrderDetails(JSON.parse(localStorage.getItem('order-items') || '[]'))
+
+            setCart([]);
+
+            localStorage.removeItem('cart');
+
+            console.log('Order saved and cart cleared successfully');
+
+            return { success: true, updatedOrders };
+        };
+
+        handleOrderCompletion();
+    }, [cart, setCart]);
+
     return (
         <div className='mt-10 h-fit w-full'>
             <h1 className="mt-8 text-3xl text-gray-900 font-semibold">
@@ -70,7 +104,7 @@ export default function OrderReviewCard() {
                 Your order is on it's way!
             </p>
 
-            <div className='mt-12 space-y-2.5'>
+            <div className='mt-6 sm:mt-8 space-y-2.5'>
                 <h2 className='text-sm text-gray-900 font-semibold'>Customer Info</h2>
 
                 <div className='flex items-center gap-3'>
@@ -98,7 +132,7 @@ export default function OrderReviewCard() {
 
             </div>
 
-            <div className='mt-12 space-y-2.5'>
+            <div className='mt-6 sm:mt-8 space-y-2.5'>
                 <h2 className='text-sm text-gray-900 font-semibold'>Shipping Info</h2>
 
                 <div>
@@ -107,6 +141,12 @@ export default function OrderReviewCard() {
                     <p className='text-sm capitalize text-gray-600'>{shippingInfo?.city}, {shippingInfo?.country}</p>
                 </div>
 
+            </div>
+
+            <div className='mt-6 sm:mt-8 space-y-2.5'>
+                <h2 className='text-sm text-gray-900 font-semibold'>In your bag</h2>
+
+                <pre>{JSON.stringify(orderDetails, null, 2)}</pre>
             </div>
 
         </div>

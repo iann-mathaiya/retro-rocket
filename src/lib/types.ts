@@ -37,7 +37,7 @@ export type ShippingInfo = {
   phone: string;
   createdAt: Date | Timestamp | string;
   updatedAt: Date | Timestamp | string;
-}
+};
 
 export type GuestCustomerAddress = {
   city?: string;
@@ -46,11 +46,17 @@ export type GuestCustomerAddress = {
   state?: string;
   country: string;
   postal_code?: string;
-}
+};
 
 export type GuestCustomer = {
   name: string | null;
   email: string | null;
   phone: string | null;
-  address: Stripe.Address | null
-}
+  address: Stripe.Address | null;
+};
+
+export type LocalOrder = {
+  items: CartItem[];
+  orderedAt: string;
+  orderId: string;
+};
