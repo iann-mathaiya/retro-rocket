@@ -1,3 +1,4 @@
+import type { Timestamp } from "firebase-admin/firestore";
 import type Stripe from "stripe";
 
 export type StripeProduct = {
@@ -34,8 +35,8 @@ export type ShippingInfo = {
   state?: string;
   zipCode?: string;
   phone: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date | Timestamp | string;
+  updatedAt: Date | Timestamp | string;
 }
 
 export type GuestCustomerAddress = {

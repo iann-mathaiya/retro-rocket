@@ -7,7 +7,7 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
 
     const idToken = request.headers.get("Authorization")?.split("Bearer ")[1];
 
-    console.log('idToken in api:', idToken)
+    // console.log('idToken in api:', idToken)
 
     if (!idToken) {
         return new Response("No token found", { status: 401 });

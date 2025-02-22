@@ -6,7 +6,7 @@ import OrderSummaryCard from './order-summary-card';
 export default function CartList() {
     const [cart, setCart] = useAtom(cartAtom);
 
-    console.log(cart);
+    // console.log(cart);
 
     function removeItem(itemId: string) {
         const updatedCart = cart.filter(item => item.id !== itemId);

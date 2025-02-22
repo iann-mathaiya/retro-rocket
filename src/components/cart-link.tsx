@@ -9,7 +9,7 @@ type CartLinkProps = {
 export default function CartLink({ pathname }: CartLinkProps) {
   const [cart, setCart] = useAtom(cartAtom);
 
-  console.log(pathname)
+  // console.log(pathname)
 
   useEffect(() => {
     setCart(JSON.parse(localStorage.getItem("cart") || "[]"));

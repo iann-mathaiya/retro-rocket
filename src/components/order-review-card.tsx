@@ -1,45 +1,63 @@
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import { actions } from 'astro:actions';
-import { cartAtom, shippingInfoIdAtom, stripeCheckoutSessionAtom, stripeCheckoutSessionIdAtom, stripeGuestCustomerAtom } from '../lib/store';
+import { cartAtom, shippingInfoAtom, stripeGuestCustomerAtom } from '../lib/store';
 
 export default function OrderReviewCard() {
     const [cart, setCart] = useAtom(cartAtom);
-    const [shippingInfoId, setShippingInfoId] = useAtom(shippingInfoIdAtom);
-    const [stripeCheckoutSessionId, setStripeCheckoutSessionId] = useAtom(stripeCheckoutSessionIdAtom);
-    const [stripeCheckoutSession, setStripeCheckoutSession] = useAtom(stripeCheckoutSessionAtom);
+    const [shippingInfo, setShippingInfo] = useAtom(shippingInfoAtom);
     const [stripeGuestCustomer, setStripeGuestCustomer] = useAtom(stripeGuestCustomerAtom);
 
     useEffect(() => {
-        const newShippingInfoId = localStorage.getItem('shipping-info-id') ?? '';
-        const newstripeCheckoutSessionId = localStorage.getItem('stripe-checkout-session-id') ?? '';
-        setShippingInfoId(newShippingInfoId);
-        setStripeCheckoutSessionId(newstripeCheckoutSessionId);
-
-        async function retrieveStripeSession() {
-            if (stripeCheckoutSessionId) {
-                const { data, error } = await actions.checkout.retrieveCheckoutSession({ sessionId: stripeCheckoutSessionId });
-
-                if (data?.success) {
-                    setStripeCheckoutSession(data.session);
+        const storedShippingId = localStorage.getItem('shipping-info-id') ?? '';
+        const storedSessionId = localStorage.getItem('stripe-checkout-session-id') ?? '';
+    
+        async function initializeCheckoutData() {
+    
+            try {
+                const sessionResponse = await actions.checkout.retrieveCheckoutSession({ 
+                    sessionId: storedSessionId 
+                });
+    
+                if (!sessionResponse.data?.success) {
+                    console.error('Failed to retrieve session:', sessionResponse.error);
+                    return;
                 }
+    
+                const session = sessionResponse.data.session;
+    
+                if (session && !session.customer && session.customer_details) {
+                    setStripeGuestCustomer({
+                        name: session.customer_details.name,
+                        email: session.customer_details.email,
+                        phone: session.customer_details.phone,
+                        address: session.customer_details.address,
+                    });
+                }
+            } catch (err) {
+                console.error('Error fetching session data:', err);
+            }
+    
+            if (!storedShippingId) return;
+    
+            try {
+                const shippingResponse = await actions.checkout.getShippingInformation({
+                    shippingInfoId: storedShippingId
+                });
+    
+                if (!shippingResponse.data?.success) {
+                    console.error('Failed to retrieve shipping info:', shippingResponse.error);
+                    return;
+                }
+    
+                setShippingInfo(shippingResponse.data.shippingInfo);
+            } catch (err) {
+                console.error('Error fetching shipping data:', err);
             }
         }
-
-        retrieveStripeSession();
-
-        if (stripeCheckoutSession && (stripeCheckoutSession.customer === null) && stripeCheckoutSession.customer_details) {
-            const guestCustomer = {
-                name: stripeCheckoutSession.customer_details.name,
-                email: stripeCheckoutSession.customer_details.email,
-                phone: stripeCheckoutSession.customer_details.phone,
-                address: stripeCheckoutSession.customer_details.address,
-            };
-
-            setStripeGuestCustomer(guestCustomer);
-
-        }
-    }, [stripeCheckoutSession, stripeCheckoutSessionId, setShippingInfoId, setStripeCheckoutSessionId, setStripeCheckoutSession, setStripeGuestCustomer]);
+    
+        initializeCheckoutData();
+    }, [setShippingInfo, setStripeGuestCustomer]); 
 
     return (
         <div className='mt-10 h-fit w-full'>
@@ -80,15 +98,15 @@ export default function OrderReviewCard() {
             </div>
 
             <div className='mt-12 space-y-2.5'>
-            <h2 className='text-sm text-gray-900 font-semibold'>Shipping Info</h2>
+                <h2 className='text-sm text-gray-900 font-semibold'>Shipping Info</h2>
 
             </div>
 
             {/* <p>{shippingInfoId}</p>
             <p>{stripeCheckoutSessionId}</p> */}
 
-            {/* <pre>{JSON.stringify(stripeGuestCustomer, null, 2)}</pre>
-            <pre>{JSON.stringify(cart, null, 2)}</pre> */}
+            {/* <pre>{JSON.stringify(stripeGuestCustomer, null, 2)}</pre> */}
+            <pre>{JSON.stringify(shippingInfo, null, 2)}</pre>
 
         </div>
     );
