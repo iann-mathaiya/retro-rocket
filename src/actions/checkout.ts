@@ -95,5 +95,13 @@ export const checkout = {
             }
 
         }
+    }),
+    getShippingInformation: defineAction({
+        input: z.object({
+            shippingInfoId: z.string()
+        }),
+        handler: async () => {
+
+        }
     })
 };
