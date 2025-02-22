@@ -11,21 +11,21 @@ export default function OrderReviewCard() {
     useEffect(() => {
         const storedShippingId = localStorage.getItem('shipping-info-id') ?? '';
         const storedSessionId = localStorage.getItem('stripe-checkout-session-id') ?? '';
-    
+
         async function initializeCheckoutData() {
-    
+
             try {
-                const sessionResponse = await actions.checkout.retrieveCheckoutSession({ 
-                    sessionId: storedSessionId 
+                const sessionResponse = await actions.checkout.retrieveCheckoutSession({
+                    sessionId: storedSessionId
                 });
-    
+
                 if (!sessionResponse.data?.success) {
                     console.error('Failed to retrieve session:', sessionResponse.error);
                     return;
                 }
-    
+
                 const session = sessionResponse.data.session;
-    
+
                 if (session && !session.customer && session.customer_details) {
                     setStripeGuestCustomer({
                         name: session.customer_details.name,
@@ -37,27 +37,27 @@ export default function OrderReviewCard() {
             } catch (err) {
                 console.error('Error fetching session data:', err);
             }
-    
+
             if (!storedShippingId) return;
-    
+
             try {
                 const shippingResponse = await actions.checkout.getShippingInformation({
                     shippingInfoId: storedShippingId
                 });
-    
+
                 if (!shippingResponse.data?.success) {
                     console.error('Failed to retrieve shipping info:', shippingResponse.error);
                     return;
                 }
-    
+
                 setShippingInfo(shippingResponse.data.shippingInfo);
             } catch (err) {
                 console.error('Error fetching shipping data:', err);
             }
         }
-    
+
         initializeCheckoutData();
-    }, [setShippingInfo, setStripeGuestCustomer]); 
+    }, [setShippingInfo, setStripeGuestCustomer]);
 
     return (
         <div className='mt-10 h-fit w-full'>
@@ -66,7 +66,8 @@ export default function OrderReviewCard() {
             </h1>
 
             <p className="mt-2 text-sm text-gray-600">
-                Thanks for shopping with us, your order is on it's way!
+                Thanks for shopping with us {shippingInfo?.firstName} 👋 <br />
+                Your order is on it's way!
             </p>
 
             <div className='mt-12 space-y-2.5'>
@@ -100,13 +101,13 @@ export default function OrderReviewCard() {
             <div className='mt-12 space-y-2.5'>
                 <h2 className='text-sm text-gray-900 font-semibold'>Shipping Info</h2>
 
+                <div>
+                    <p className='text-sm text-gray-600'>{shippingInfo?.phone}</p>
+                    <p className='text-sm capitalize text-gray-600'>{shippingInfo?.address}</p>
+                    <p className='text-sm capitalize text-gray-600'>{shippingInfo?.city}, {shippingInfo?.country}</p>
+                </div>
+
             </div>
-
-            {/* <p>{shippingInfoId}</p>
-            <p>{stripeCheckoutSessionId}</p> */}
-
-            {/* <pre>{JSON.stringify(stripeGuestCustomer, null, 2)}</pre> */}
-            <pre>{JSON.stringify(shippingInfo, null, 2)}</pre>
 
         </div>
     );
