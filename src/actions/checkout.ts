@@ -2,6 +2,7 @@ import { z } from "astro:schema";
 import { defineAction } from "astro:actions";
 import Stripe from "stripe";
 import { db } from "../firebase/server";
+import type { ShippingInfo } from "../lib/types";
 
 export const checkout = {
     saveShippingInformation: defineAction({
@@ -23,13 +24,13 @@ export const checkout = {
             const dataToStore = {
                 ...input,
                 createdAt: new Date()
-              };
+            };
 
-              console.log(dataToStore)
+            console.log(dataToStore);
 
             const docRef = await db.collection('shipping-info').add(dataToStore);
 
-            console.log(docRef.id)
+            console.log(docRef.id);
 
             return { success: true, shippingInfoId: docRef.id };
 
@@ -60,7 +61,7 @@ export const checkout = {
                     cancel_url: cancelUrl,
                 });
 
-                console.log('session id:', session.id)
+                console.log('session id:', session.id);
 
                 return { success: true, session: { id: session.id, url: session.url } };
 
@@ -85,7 +86,7 @@ export const checkout = {
             try {
                 const session = await stripe.checkout.sessions.retrieve(sessionId);
 
-                console.log('session:', session)
+                console.log('session:', session);
 
                 return { success: true, session };
 
@@ -100,8 +101,23 @@ export const checkout = {
         input: z.object({
             shippingInfoId: z.string()
         }),
-        handler: async () => {
+        handler: async ({ shippingInfoId }) => {
+            try {
 
+                const doc = await db.collection('shipping-info').doc(shippingInfoId).get();
+
+                if(!doc.exists){
+                    return { success: false, message: 'Shipping information not found' };
+                }
+
+                const shippingInfo = doc.data() as ShippingInfo;
+
+                return { success: true, shippingInfo };
+
+            } catch (error) {
+                console.error('Error retrieving checkout session:', error);
+                return { success: false, message: 'An unexpected error occurred. Please try again.' };
+            }
         }
     })
 };
