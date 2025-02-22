@@ -62,32 +62,33 @@ export default function OrderReviewCard() {
     }, [setShippingInfo, setStripeGuestCustomer]);
 
     useEffect(() => {
+        const existingOrders: LocalOrder[] = JSON.parse(localStorage.getItem('order-items') || '[]');
+
+        if (existingOrders.length > 0) {
+            setOrderDetails(existingOrders);
+        }
+
         function handleOrderCompletion() {
             if (!cart || cart.length === 0) {
                 console.log('Cart is empty');
                 return;
             }
 
-            const existingOrders = JSON.parse(localStorage.getItem('order-items') || '[]');
-
             const newOrder = {
                 items: cart,
                 orderedAt: new Date().toISOString(),
-                orderId: `order-${Date.now()}`
+                orderId: `ORD${Date.now()}`
             };
 
             const updatedOrders: LocalOrder[] = [...existingOrders, newOrder];
 
             localStorage.setItem('order-items', JSON.stringify(updatedOrders));
-            setOrderDetails(JSON.parse(localStorage.getItem('order-items') || '[]'))
+
+            setOrderDetails(JSON.parse(localStorage.getItem('order-items') || '[]'));
 
             setCart([]);
 
             localStorage.removeItem('cart');
-
-            console.log('Order saved and cart cleared successfully');
-
-            return { success: true, updatedOrders };
         };
 
         handleOrderCompletion();
@@ -146,7 +147,27 @@ export default function OrderReviewCard() {
             <div className='mt-6 sm:mt-8 space-y-2.5'>
                 <h2 className='text-sm text-gray-900 font-semibold'>In your bag</h2>
 
-                <pre>{JSON.stringify(orderDetails, null, 2)}</pre>
+                {/* <pre>{JSON.stringify(orderDetails, null, 2)}</pre> */}
+
+                <ul>
+                    {orderDetails?.map(order =>
+                        <li key={order.orderId}>
+                            <h3 className='text-xs text-gray-900 font-semibold'>Order #{order.orderId} - ordered at {order.orderedAt}</h3>
+
+                            {order.items.map(item =>
+                                <ol key={item.id} className='flex items-center'>
+                                    <img src={item.imageSrc} alt={item.name} className='w-20 aspect-square object-center object-cover' />
+
+                                    <div>
+                                        <h4 className='text-sm text-gray-700'>{item.name}</h4>
+                                        <p className='text-xs text-gray-500'>{item.quantity} x ${item.price}</p>
+                                    </div>
+                                </ol>
+
+                            )}
+                        </li>
+                    )}
+                </ul>
             </div>
 
         </div>
