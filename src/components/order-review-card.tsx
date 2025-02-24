@@ -95,17 +95,26 @@ export default function OrderReviewCard() {
     }, [cart, setCart]);
 
     return (
-        <div className='mt-10 h-fit w-full'>
-            <h1 className="mt-8 text-3xl text-gray-900 font-semibold">
-                Order Details
-            </h1>
+        <div className='sm:mt-10 h-fit w-full'>
+            <div className='py-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 sm:gap-4'>
+                <div>
+                    <h1 className="text-3xl text-gray-900 font-semibold">
+                        Order Details
+                    </h1>
 
-            <p className="mt-2 text-sm text-gray-600">
-                Thanks for shopping with us {shippingInfo?.firstName} 👋 <br />
-                Your order is on it's way!
-            </p>
+                    <p className="mt-2 text-sm text-gray-600">
+                        Thanks for shopping with us {shippingInfo?.firstName} 👋 <br />
+                        Your order is on it's way!
+                    </p>
+                </div>
 
-            <div className='mt-6 sm:mt-8  grid grid-cols-1 sm:grid-cols-3 gap-8'>
+                <a href='/signin' className="w-fit py-2 px-8 min-h-8 flex items-center justify-center gap-2 text-white bg-gray-950 hover:bg-orange-600 hover:cursor-pointer rounded-full transition-all duration-500 ease-in-out">
+                    Sign in track your order
+                </a>
+
+            </div>
+
+            <div className='mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-3 gap-8'>
                 <div className='space-y-6 sm:space-y-8'>
                     <div className='space-y-2.5'>
                         <h2 className='text-sm text-gray-900 font-semibold'>Customer Info</h2>
