@@ -1,4 +1,3 @@
-import type { Timestamp } from "firebase-admin/firestore";
 import type Stripe from "stripe";
 
 export type StripeProduct = {
@@ -23,20 +22,6 @@ export type CartItem = {
   priceId: string;
   price: number | string;
   totalPrice: number | string;
-};
-
-export type ShippingInfo = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  country: string;
-  address: string;
-  city?: string;
-  state?: string;
-  zipCode?: string;
-  phone: string;
-  createdAt: Date | Timestamp | string;
-  updatedAt: Date | Timestamp | string;
 };
 
 export type GuestCustomer = {

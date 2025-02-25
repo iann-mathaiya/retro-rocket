@@ -2,7 +2,7 @@ import { useAtom } from 'jotai';
 import { actions } from 'astro:actions';
 import { useEffect, useState } from 'react';
 import type { LocalOrder } from '../lib/types';
-import { cartAtom, shippingInfoAtom, stripeGuestCustomerAtom } from '../lib/store';
+import { cartAtom, stripeGuestCustomerAtom } from '../lib/store';
 
 export default function OrderReviewCard() {
     const [cart, setCart] = useAtom(cartAtom);
