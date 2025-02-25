@@ -6,16 +6,13 @@ import { cartAtom, shippingInfoAtom, stripeGuestCustomerAtom } from '../lib/stor
 
 export default function OrderReviewCard() {
     const [cart, setCart] = useAtom(cartAtom);
-    const [shippingInfo, setShippingInfo] = useAtom(shippingInfoAtom);
     const [orderDetails, setOrderDetails] = useState<LocalOrder[] | undefined>(undefined);
     const [stripeGuestCustomer, setStripeGuestCustomer] = useAtom(stripeGuestCustomerAtom);
 
     useEffect(() => {
-        const storedShippingId = localStorage.getItem('shipping-info-id') ?? '';
         const storedSessionId = localStorage.getItem('stripe-checkout-session-id') ?? '';
 
         async function initializeCheckoutData() {
-
             try {
                 const sessionResponse = await actions.checkout.retrieveCheckoutSession({
                     sessionId: storedSessionId
@@ -39,27 +36,10 @@ export default function OrderReviewCard() {
             } catch (err) {
                 console.error('Error fetching session data:', err);
             }
-
-            if (!storedShippingId) return;
-
-            try {
-                const shippingResponse = await actions.checkout.getShippingInformation({
-                    shippingInfoId: storedShippingId
-                });
-
-                if (!shippingResponse.data?.success) {
-                    console.error('Failed to retrieve shipping info:', shippingResponse.error);
-                    return;
-                }
-
-                setShippingInfo(shippingResponse.data.shippingInfo);
-            } catch (err) {
-                console.error('Error fetching shipping data:', err);
-            }
         }
 
         initializeCheckoutData();
-    }, [setShippingInfo, setStripeGuestCustomer]);
+    }, [setStripeGuestCustomer]);
 
     useEffect(() => {
         const existingOrders: LocalOrder[] = JSON.parse(localStorage.getItem('order-items') || '[]');
@@ -103,7 +83,7 @@ export default function OrderReviewCard() {
                     </h1>
 
                     <p className="mt-2 text-sm text-gray-600">
-                        Thanks for shopping with us {shippingInfo?.firstName} 👋 <br />
+                        Thanks for shopping with us {stripeGuestCustomer?.name} 👋 <br />
                         Your order is on it's way!
                     </p>
                 </div>
@@ -113,6 +93,8 @@ export default function OrderReviewCard() {
                 </a>
 
             </div>
+
+            <pre>{JSON.stringify(stripeGuestCustomer, null, 2)}</pre>
 
             <div className='mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-3 gap-8'>
                 <div className='space-y-6 sm:space-y-8'>
@@ -148,9 +130,10 @@ export default function OrderReviewCard() {
                         <h2 className='text-sm text-gray-900 font-semibold'>Shipping Info</h2>
 
                         <div>
-                            <p className='text-sm text-gray-600'>{shippingInfo?.phone}</p>
-                            <p className='text-sm capitalize text-gray-600'>{shippingInfo?.address}</p>
-                            <p className='text-sm capitalize text-gray-600'>{shippingInfo?.city}, {shippingInfo?.country}</p>
+                            <p className='text-sm text-gray-600'>{stripeGuestCustomer?.phone}</p>
+                            <p className='text-sm capitalize text-gray-600'>{stripeGuestCustomer?.address?.line1}</p>
+                            <p className='text-sm capitalize text-gray-600'>{stripeGuestCustomer?.address?.city}, {stripeGuestCustomer?.address?.postal_code}</p>
+                            <p className='text-sm capitalize text-gray-600'>{stripeGuestCustomer?.address?.state}, {stripeGuestCustomer?.address?.country}</p>
                         </div>
 
                     </div>
