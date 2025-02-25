@@ -95,7 +95,7 @@ export default function OrderReviewCard() {
     }, [cart, setCart]);
 
     return (
-        <div className='sm:mt-10 h-fit w-full'>
+        <>
             <div className='py-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 sm:gap-4'>
                 <div>
                     <h1 className="text-3xl text-gray-900 font-semibold">
@@ -185,6 +185,6 @@ export default function OrderReviewCard() {
             </div>
 
 
-        </div>
+        </>
     );
 }
