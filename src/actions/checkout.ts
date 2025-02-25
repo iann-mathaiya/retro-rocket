@@ -60,9 +60,45 @@ export const checkout = {
                     mode: 'payment',
                     success_url: successUrl,
                     cancel_url: cancelUrl,
+                    shipping_address_collection: {
+                        allowed_countries: ['US', 'CA', 'GB'], // Add countries you want to support
+                    },
+                    shipping_options: [
+                        {
+                            shipping_rate_data: {
+                                type: 'fixed_amount',
+                                fixed_amount: { amount: 1000, currency: 'usd' },
+                                display_name: 'Express Shipping',
+                                delivery_estimate: {
+                                    minimum: { unit: 'business_day', value: 1 },
+                                    maximum: { unit: 'business_day', value: 2 },
+                                },
+                            },
+                        },
+                        {
+                            shipping_rate_data: {
+                                type: 'fixed_amount',
+                                fixed_amount: { amount: 750, currency: 'usd' },
+                                display_name: 'Standard Shipping',
+                                delivery_estimate: {
+                                    minimum: { unit: 'business_day', value: 3 },
+                                    maximum: { unit: 'business_day', value: 4 },
+                                },
+                            },
+                        },
+                        {
+                            shipping_rate_data: {
+                                type: 'fixed_amount',
+                                fixed_amount: { amount: 0, currency: 'usd' },
+                                display_name: 'Free Shipping',
+                                delivery_estimate: {
+                                    minimum: { unit: 'business_day', value: 5 },
+                                    maximum: { unit: 'business_day', value: 7 },
+                                },
+                            },
+                        },
+                    ],
                 });
-
-                // console.log('session id:', session.id);
 
                 return { success: true, session: { id: session.id, url: session.url } };
 
