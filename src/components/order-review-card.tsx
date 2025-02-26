@@ -94,8 +94,6 @@ export default function OrderReviewCard() {
 
             </div>
 
-            <pre>{JSON.stringify(stripeGuestCustomer, null, 2)}</pre>
-
             <div className='mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-3 gap-8'>
                 <div className='space-y-6 sm:space-y-8'>
                     <div className='space-y-2.5'>

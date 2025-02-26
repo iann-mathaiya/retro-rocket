@@ -21,13 +21,14 @@ export const checkout = {
 
             try {
                 const session = await stripe.checkout.sessions.create({
+                    mode: 'payment',
                     payment_method_types: ['card'],
                     line_items: lineItems,
-                    mode: 'payment',
                     success_url: successUrl,
                     cancel_url: cancelUrl,
+                    phone_number_collection: { enabled: true },
                     shipping_address_collection: {
-                        allowed_countries: ['US', 'CA', 'GB'], // Add countries you want to support
+                        allowed_countries: ['US', 'CA', 'GB', 'JP', 'ZA', 'KE', 'EG', 'AU', 'IN', 'DE', 'BR', 'FR'],
                     },
                     shipping_options: [
                         {
