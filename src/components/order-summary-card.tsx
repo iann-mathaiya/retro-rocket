@@ -55,7 +55,7 @@ export default function OrderSummaryCard() {
                 </p>
             </div>
 
-            <button type="button" onClick={handleCheckout} disabled={isLoading} className='mt-4 w-full py-2 px-8 min-h-8 flex items-center justify-center gap-2 text-white text-sm bg-gray-950 hover:bg-orange-600 disabled:hover:bg-gray-900 disabled:opacity-50 hover:cursor-pointer disabled:cursor-not-allowed rounded-lg transition-all duration-500 ease-in-out'>
+            <button type="button" onClick={handleCheckout} disabled={isLoading} className='mt-4 w-full py-2 px-8 min-h-8 flex items-center justify-center gap-2 text-white bg-gray-950 hover:bg-orange-600 disabled:hover:bg-gray-900 disabled:opacity-50 hover:cursor-pointer disabled:cursor-not-allowed rounded-full transition-all duration-500 ease-in-out'>
                 {isLoading ? 'Processing...' : 'Checkout'}
             </button>
 

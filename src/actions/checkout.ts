@@ -88,7 +88,12 @@ export const checkout = {
             });
 
             try {
-                const session = await stripe.checkout.sessions.retrieve(sessionId);
+                const session = await stripe.checkout.sessions.retrieve(
+                    sessionId,
+                    {expand: ['line_items.data.price.product']}
+                );
+
+                console.log('retrieved session:', session)
 
                 return { success: true, session };
 

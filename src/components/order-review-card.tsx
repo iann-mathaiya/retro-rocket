@@ -3,11 +3,14 @@ import { actions } from 'astro:actions';
 import { useEffect, useState } from 'react';
 import type { LocalOrder } from '../lib/types';
 import { cartAtom, stripeGuestCustomerAtom } from '../lib/store';
+import type Stripe from 'stripe';
 
 export default function OrderReviewCard() {
     const [cart, setCart] = useAtom(cartAtom);
     const [orderDetails, setOrderDetails] = useState<LocalOrder[] | undefined>(undefined);
     const [stripeGuestCustomer, setStripeGuestCustomer] = useAtom(stripeGuestCustomerAtom);
+
+    const [session, setSession] = useState<Stripe.Response<Stripe.Checkout.Session> | undefined>(undefined)
 
     useEffect(() => {
         const storedSessionId = localStorage.getItem('stripe-checkout-session-id') ?? '';
@@ -24,6 +27,8 @@ export default function OrderReviewCard() {
                 }
 
                 const session = sessionResponse.data.session;
+
+                setSession(session)
 
                 if (session && !session.customer && session.customer_details) {
                     setStripeGuestCustomer({
@@ -94,6 +99,8 @@ export default function OrderReviewCard() {
 
             </div>
 
+            <pre>{JSON.stringify(session, null, 2)}</pre>
+
             <div className='mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-3 gap-8'>
                 <div className='space-y-6 sm:space-y-8'>
                     <div className='space-y-2.5'>
@@ -131,7 +138,9 @@ export default function OrderReviewCard() {
                             <p className='text-sm text-gray-600'>{stripeGuestCustomer?.phone}</p>
                             <p className='text-sm capitalize text-gray-600'>{stripeGuestCustomer?.address?.line1}</p>
                             <p className='text-sm capitalize text-gray-600'>{stripeGuestCustomer?.address?.city}, {stripeGuestCustomer?.address?.postal_code}</p>
-                            <p className='text-sm capitalize text-gray-600'>{stripeGuestCustomer?.address?.state}, {stripeGuestCustomer?.address?.country}</p>
+                            <p className='text-sm capitalize text-gray-600'>
+                                {stripeGuestCustomer?.address?.state && `${stripeGuestCustomer?.address?.state},`} {stripeGuestCustomer?.address?.country}
+                            </p>
                         </div>
 
                     </div>
