@@ -1,36 +1,32 @@
 import { useAtom } from 'jotai';
+import type Stripe from 'stripe';
 import { actions } from 'astro:actions';
 import { useEffect, useState } from 'react';
-import type { LocalOrder, OrderItem } from '../lib/types';
-import { cartAtom, stripeGuestCustomerAtom } from '../lib/store';
-import type Stripe from 'stripe';
 import { transformOrderData } from '../lib/utils';
+import type { OrderItem, StripeOrder } from '../lib/types';
+import { cartAtom, stripeGuestCustomerAtom } from '../lib/store';
 
 export default function OrderReviewCard() {
     const [cart, setCart] = useAtom(cartAtom);
-    const [orderDetails, setOrderDetails] = useState<LocalOrder[] | undefined>(undefined);
+    const [orderDetails, setOrderDetails] = useState<StripeOrder | undefined>(undefined);
     const [stripeGuestCustomer, setStripeGuestCustomer] = useAtom(stripeGuestCustomerAtom);
-    const [orderItems, setOrderItems] = useState<OrderItem[]>([])
-
-    const [session, setSession] = useState<Stripe.Response<Stripe.Checkout.Session> | undefined>(undefined)
+    const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
 
     useEffect(() => {
         const storedSessionId = localStorage.getItem('stripe-checkout-session-id') ?? '';
 
         async function initializeCheckoutData() {
             try {
-                const sessionResponse = await actions.checkout.retrieveCheckoutSession({
+                const { data, error } = await actions.checkout.retrieveCheckoutSession({
                     sessionId: storedSessionId
                 });
 
-                if (!sessionResponse.data?.success) {
-                    console.error('Failed to retrieve session:', sessionResponse.error);
+                if (!data?.success) {
+                    console.error('Failed to retrieve session:', error);
                     return;
                 }
 
-                const session = sessionResponse.data.session;
-
-                setSession(session)
+                const session = data.session;
 
                 if (session && !session.customer && session.customer_details) {
                     setStripeGuestCustomer({
@@ -41,12 +37,16 @@ export default function OrderReviewCard() {
                     });
                 }
 
-                if (session?.line_items){
-                    const newOrderItems = transformOrderData(session.line_items)
-                    setOrderItems(newOrderItems)
+                if (session?.line_items) {
+                    const newOrderItems = transformOrderData(session.line_items);
+                    setOrderItems(newOrderItems);
                 }
-                if(session) {
-                    
+                if (session) {
+                    setOrderDetails({
+                        id: session.id,
+                        orderedAt: new Date(session.created * 1000).toLocaleString(),
+                        paymentStatus: session.payment_status,
+                    });
                 }
             } catch (err) {
                 console.error('Error fetching session data:', err);
@@ -57,29 +57,11 @@ export default function OrderReviewCard() {
     }, [setStripeGuestCustomer]);
 
     useEffect(() => {
-        const existingOrders: LocalOrder[] = JSON.parse(localStorage.getItem('order-items') || '[]');
-
-        if (existingOrders.length > 0) {
-            setOrderDetails(existingOrders);
-        }
-
         function handleOrderCompletion() {
             if (!cart || cart.length === 0) {
                 console.log('Cart is empty');
                 return;
             }
-
-            const newOrder = {
-                items: cart,
-                orderedAt: new Date().toISOString(),
-                orderId: `ORD${Date.now()}`
-            };
-
-            const updatedOrders: LocalOrder[] = [...existingOrders, newOrder];
-
-            localStorage.setItem('order-items', JSON.stringify(updatedOrders));
-
-            setOrderDetails(JSON.parse(localStorage.getItem('order-items') || '[]'));
 
             setCart([]);
 
@@ -108,8 +90,6 @@ export default function OrderReviewCard() {
                 </a>
 
             </div>
-
-            <pre>{JSON.stringify(orderItems, null, 2)}</pre>
 
             <div className='mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-3 gap-8'>
                 <div className='space-y-6 sm:space-y-8'>
@@ -157,27 +137,18 @@ export default function OrderReviewCard() {
                 </div>
 
 
-                <div className='space-y-2.5 sm:order-first sm:col-span-2'>
+                <div className='space-y-1 sm:order-first sm:col-span-2'>
                     <h2 className='text-sm text-gray-900 font-semibold'>In your bag</h2>
-
-                    {/* <pre>{JSON.stringify(orderDetails, null, 2)}</pre> */}
-
+                    <p className='text-xs text-gray-600'>Ordered at {orderDetails?.orderedAt}</p>
                     <ul className='space-y-6 sm:space-y-8'>
-                        {orderDetails?.map(order =>
-                            <li key={order.orderId}>
-                                <h3 className='text-xs text-gray-900 font-semibold'>Order #{order.orderId} - ordered at {order.orderedAt}</h3>
+                        {orderItems.map(item =>
+                            <li key={item.id} className='flex items-center'>
+                                <img src={item.images[0]} alt={item.name} className='w-20 aspect-square object-center object-cover' />
 
-                                {orderItems.map(item =>
-                                    <ol key={item.id} className='flex items-center'>
-                                        <img src={item.images[0]} alt={item.name} className='w-20 aspect-square object-center object-cover' />
-
-                                        <div>
-                                            <h4 className='text-sm text-gray-700'>{item.name}</h4>
-                                            <p className='text-xs text-gray-500'>{item.quantity} x ${item.amount_total}</p>
-                                        </div>
-                                    </ol>
-
-                                )}
+                                <div>
+                                    <h4 className='text-sm text-gray-700'>{item.name}</h4>
+                                    <p className='text-xs text-gray-500'>{item.quantity} x ${item.amount_total}</p>
+                                </div>
                             </li>
                         )}
                     </ul>

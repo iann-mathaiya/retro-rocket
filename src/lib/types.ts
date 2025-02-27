@@ -31,11 +31,11 @@ export type GuestCustomer = {
   address: Stripe.Address | null;
 };
 
-export type LocalOrder = {
-  items: CartItem[];
+export type StripeOrder = {
+  id: string;
   orderedAt: string;
-  orderId: string;
-};
+  paymentStatus: string
+}
 
 export type OrderItem = {
   id: string
