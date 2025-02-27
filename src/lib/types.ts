@@ -36,3 +36,14 @@ export type LocalOrder = {
   orderedAt: string;
   orderId: string;
 };
+
+export type OrderItem = {
+  id: string
+  name: string;
+  quantity: number | null
+  amount_discount: number;
+  amount_subtotal: number;
+  amount_total: number;
+  images: string[];
+  metadata: Record<string, string | number>;
+};

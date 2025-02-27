@@ -1,14 +1,16 @@
 import { useAtom } from 'jotai';
 import { actions } from 'astro:actions';
 import { useEffect, useState } from 'react';
-import type { LocalOrder } from '../lib/types';
+import type { LocalOrder, OrderItem } from '../lib/types';
 import { cartAtom, stripeGuestCustomerAtom } from '../lib/store';
 import type Stripe from 'stripe';
+import { transformOrderData } from '../lib/utils';
 
 export default function OrderReviewCard() {
     const [cart, setCart] = useAtom(cartAtom);
     const [orderDetails, setOrderDetails] = useState<LocalOrder[] | undefined>(undefined);
     const [stripeGuestCustomer, setStripeGuestCustomer] = useAtom(stripeGuestCustomerAtom);
+    const [orderItems, setOrderItems] = useState<OrderItem[]>([])
 
     const [session, setSession] = useState<Stripe.Response<Stripe.Checkout.Session> | undefined>(undefined)
 
@@ -37,6 +39,14 @@ export default function OrderReviewCard() {
                         phone: session.customer_details.phone,
                         address: session.customer_details.address,
                     });
+                }
+
+                if (session?.line_items){
+                    const newOrderItems = transformOrderData(session.line_items)
+                    setOrderItems(newOrderItems)
+                }
+                if(session) {
+                    
                 }
             } catch (err) {
                 console.error('Error fetching session data:', err);
@@ -99,7 +109,7 @@ export default function OrderReviewCard() {
 
             </div>
 
-            <pre>{JSON.stringify(session, null, 2)}</pre>
+            <pre>{JSON.stringify(orderItems, null, 2)}</pre>
 
             <div className='mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-3 gap-8'>
                 <div className='space-y-6 sm:space-y-8'>
@@ -157,13 +167,13 @@ export default function OrderReviewCard() {
                             <li key={order.orderId}>
                                 <h3 className='text-xs text-gray-900 font-semibold'>Order #{order.orderId} - ordered at {order.orderedAt}</h3>
 
-                                {order.items.map(item =>
+                                {orderItems.map(item =>
                                     <ol key={item.id} className='flex items-center'>
-                                        <img src={item.imageSrc} alt={item.name} className='w-20 aspect-square object-center object-cover' />
+                                        <img src={item.images[0]} alt={item.name} className='w-20 aspect-square object-center object-cover' />
 
                                         <div>
                                             <h4 className='text-sm text-gray-700'>{item.name}</h4>
-                                            <p className='text-xs text-gray-500'>{item.quantity} x ${item.price}</p>
+                                            <p className='text-xs text-gray-500'>{item.quantity} x ${item.amount_total}</p>
                                         </div>
                                     </ol>
 
