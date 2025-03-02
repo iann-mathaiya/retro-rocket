@@ -31,19 +31,26 @@ export type GuestCustomer = {
   address: Stripe.Address | null;
 };
 
-export type StripeOrder = {
-  id: string;
-  orderedAt: string;
-  paymentStatus: string
-}
-
 export type OrderItem = {
-  id: string
+  id: string;
   name: string;
-  quantity: number | null
+  quantity: number | null;
   amount_discount: number;
   amount_subtotal: number;
   amount_total: number;
   images: string[];
   metadata: Record<string, string | number>;
+};
+
+export type StripeOrder = {
+  id: string;
+  orderedAt: string;
+  paymentStatus: string;
+  orderItems: OrderItem[];
+  customer: {
+    name: string | null,
+    email: string | null,
+    phone: string | null,
+    address: Stripe.Address | null,
+  };
 };
