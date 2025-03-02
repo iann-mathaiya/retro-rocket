@@ -46,11 +46,6 @@ export type StripeOrder = {
   id: string;
   orderedAt: string;
   paymentStatus: string;
-  orderItems: OrderItem[];
-  customer: {
-    name: string | null,
-    email: string | null,
-    phone: string | null,
-    address: Stripe.Address | null,
-  };
+  customer: GuestCustomer;
+  orderItems: OrderItem[] | null;
 };

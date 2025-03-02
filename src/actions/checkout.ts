@@ -2,6 +2,7 @@ import Stripe from "stripe";
 import { z } from "astro:schema";
 import { defineAction } from "astro:actions";
 import { transformOrderData } from "../lib/utils";
+import type { StripeOrder } from "../lib/types";
 
 export const checkout = {
     createCheckoutSession: defineAction({
@@ -96,7 +97,7 @@ export const checkout = {
 
                 const orderItems = session.line_items ? transformOrderData(session.line_items) : null;
 
-                const transformedSession = {
+                const transformedSession: StripeOrder = {
                     id: session.id,
                     orderedAt: new Date(session.created * 1000).toLocaleString(),
                     paymentStatus: session.payment_status,
@@ -105,13 +106,13 @@ export const checkout = {
                         name: session.customer_details?.name ?? '',
                         email: session.customer_details?.email ?? '',
                         phone: session.customer_details?.phone ?? '',
-                        address: session.customer_details?.address ?? {},
+                        address: session.customer_details?.address ?? null,
                     }
                 };
 
                 console.log('retrieved session:', { ...transformedSession });
 
-                return { success: true, session };
+                return { success: true, session: { ...transformedSession } };
 
             } catch (error) {
                 console.error('Error retrieving checkout session:', error);

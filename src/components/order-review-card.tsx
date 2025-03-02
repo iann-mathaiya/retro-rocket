@@ -1,16 +1,11 @@
 import { useAtom } from 'jotai';
-import type Stripe from 'stripe';
+import { useEffect } from 'react';
 import { actions } from 'astro:actions';
-import { useEffect, useState } from 'react';
-import { transformOrderData } from '../lib/utils';
-import type { OrderItem, StripeOrder } from '../lib/types';
-import { cartAtom, stripeGuestCustomerAtom } from '../lib/store';
+import { cartAtom, stripeCheckoutSessionAtom } from '../lib/store';
 
 export default function OrderReviewCard() {
     const [cart, setCart] = useAtom(cartAtom);
-    const [orderDetails, setOrderDetails] = useState<StripeOrder | undefined>(undefined);
-    const [stripeGuestCustomer, setStripeGuestCustomer] = useAtom(stripeGuestCustomerAtom);
-    const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
+    const [stripeCheckoutSession, setStripeCheckoutSession] = useAtom(stripeCheckoutSessionAtom);
 
     useEffect(() => {
         const storedSessionId = localStorage.getItem('stripe-checkout-session-id') ?? '';
@@ -26,35 +21,16 @@ export default function OrderReviewCard() {
                     return;
                 }
 
-                const session = data.session;
+                setStripeCheckoutSession(data.session)
 
-                if (session && !session.customer && session.customer_details) {
-                    setStripeGuestCustomer({
-                        name: session.customer_details.name,
-                        email: session.customer_details.email,
-                        phone: session.customer_details.phone,
-                        address: session.customer_details.address,
-                    });
-                }
-
-                if (session?.line_items) {
-                    const newOrderItems = transformOrderData(session.line_items);
-                    setOrderItems(newOrderItems);
-                }
-                if (session) {
-                    setOrderDetails({
-                        id: session.id,
-                        orderedAt: new Date(session.created * 1000).toLocaleString(),
-                        paymentStatus: session.payment_status,
-                    });
-                }
+                
             } catch (err) {
                 console.error('Error fetching session data:', err);
             }
         }
 
         initializeCheckoutData();
-    }, [setStripeGuestCustomer]);
+    }, [setStripeCheckoutSession]);
 
     useEffect(() => {
         function handleOrderCompletion() {
@@ -71,6 +47,8 @@ export default function OrderReviewCard() {
         handleOrderCompletion();
     }, [cart, setCart]);
 
+    const session = stripeCheckoutSession
+
     return (
         <>
             <div className='py-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 sm:gap-4'>
@@ -80,7 +58,7 @@ export default function OrderReviewCard() {
                     </h1>
 
                     <p className="mt-2 text-sm text-gray-600">
-                        Thanks for shopping with us {stripeGuestCustomer?.name} 👋 <br />
+                        Thanks for shopping with us {session?.customer.name} 👋 <br />
                         Your order is on it's way!
                     </p>
                 </div>
@@ -114,8 +92,8 @@ export default function OrderReviewCard() {
                             </svg>
 
                             <div>
-                                <h3 className='text-sm font-medium text-gray-900'>{stripeGuestCustomer?.name}</h3>
-                                <p className='text-sm lowercase text-gray-600'>{stripeGuestCustomer?.email}</p>
+                                <h3 className='text-sm font-medium text-gray-900'>{session?.customer?.name}</h3>
+                                <p className='text-sm lowercase text-gray-600'>{session?.customer?.email}</p>
                             </div>
                         </div>
 
@@ -125,11 +103,11 @@ export default function OrderReviewCard() {
                         <h2 className='text-sm text-gray-900 font-semibold'>Shipping Info</h2>
 
                         <div>
-                            <p className='text-sm text-gray-600'>{stripeGuestCustomer?.phone}</p>
-                            <p className='text-sm capitalize text-gray-600'>{stripeGuestCustomer?.address?.line1}</p>
-                            <p className='text-sm capitalize text-gray-600'>{stripeGuestCustomer?.address?.city}, {stripeGuestCustomer?.address?.postal_code}</p>
+                            <p className='text-sm text-gray-600'>{session?.customer?.phone}</p>
+                            <p className='text-sm capitalize text-gray-600'>{session?.customer?.address?.line1}</p>
+                            <p className='text-sm capitalize text-gray-600'>{session?.customer?.address?.city}, {session?.customer?.address?.postal_code}</p>
                             <p className='text-sm capitalize text-gray-600'>
-                                {stripeGuestCustomer?.address?.state && `${stripeGuestCustomer?.address?.state},`} {stripeGuestCustomer?.address?.country}
+                                {session?.customer?.address?.state && `${session?.customer?.address?.state},`} {session?.customer?.address?.country}
                             </p>
                         </div>
 
@@ -139,9 +117,9 @@ export default function OrderReviewCard() {
 
                 <div className='space-y-1 sm:order-first sm:col-span-2'>
                     <h2 className='text-sm text-gray-900 font-semibold'>In your bag</h2>
-                    <p className='text-xs text-gray-600'>Ordered at {orderDetails?.orderedAt}</p>
+                    <p className='text-xs text-gray-600'>Ordered at {session?.orderedAt}</p>
                     <ul className='space-y-6 sm:space-y-8'>
-                        {orderItems.map(item =>
+                        {session?.orderItems?.map(item =>
                             <li key={item.id} className='flex items-center'>
                                 <img src={item.images[0]} alt={item.name} className='w-20 aspect-square object-center object-cover' />
 
