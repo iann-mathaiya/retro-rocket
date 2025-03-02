@@ -21,7 +21,7 @@ export const search = {
                     expand: ['data.default_price'],
                 });
 
-                const transformedProducts: StripeProduct[] = response.data.map((product) => ({
+                const productsDTO: StripeProduct[] = response.data.map((product) => ({
                     ...product,
                     default_price: typeof product.default_price === 'object' ?
                         {
@@ -33,7 +33,7 @@ export const search = {
                         product.default_price,
                 }));
 
-                return { success: true, products: transformedProducts };
+                return { success: true, products: productsDTO };
 
             } catch (error) {
                 if (error instanceof Stripe.errors.StripeError) {

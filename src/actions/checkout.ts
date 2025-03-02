@@ -97,7 +97,7 @@ export const checkout = {
 
                 const orderItems = session.line_items ? transformOrderData(session.line_items) : null;
 
-                const transformedSession: StripeOrder = {
+                const sessionDTO: StripeOrder = {
                     id: session.id,
                     orderedAt: new Date(session.created * 1000).toLocaleString(),
                     paymentStatus: session.payment_status,
@@ -110,9 +110,9 @@ export const checkout = {
                     }
                 };
 
-                console.log('retrieved session:', { ...transformedSession });
+                console.log('retrieved session:', { ...sessionDTO });
 
-                return { success: true, session: { ...transformedSession } };
+                return { success: true, session: { ...sessionDTO } };
 
             } catch (error) {
                 console.error('Error retrieving checkout session:', error);

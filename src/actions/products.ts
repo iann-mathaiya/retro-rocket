@@ -31,7 +31,7 @@ export const products = {
                     throw new Error('Invalid response format from Stripe');
                 }
 
-                const transformedProducts: StripeProduct[] = response.data.map((product) => ({
+                const productsDTO: StripeProduct[] = response.data.map((product) => ({
                     ...product,
                     default_price: typeof product.default_price === 'object' ?
                         {
@@ -43,7 +43,7 @@ export const products = {
                         product.default_price,
                 }));
 
-                return { success: true, products: transformedProducts };
+                return { success: true, products: productsDTO };
             } catch (error) {
                 console.error(error);
                 return { success: false, message: "An unexpected error occurred. Please try again." };
