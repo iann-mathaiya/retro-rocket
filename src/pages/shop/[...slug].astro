@@ -3,6 +3,7 @@ import { actions } from "astro:actions";
 import { fade } from "astro:transitions";
 import StoreLayout from "../../layouts/StoreLayout.astro";
 import AddToCartButton from "../../components/add-to-cart-btn";
+import ProductCard from "../../components/product-card.astro";
 
 const { slug } = Astro.params;
 
@@ -20,7 +21,7 @@ if (!product) {
   return new Response("Product not found", { status: 404 });
 }
 
-const { data: categoryProducts, error: categoryProductsError } = await Astro.callAction(actions.products.getProducts, {
+const { data: sameCategoryProducts, error: sameCategoryProductsError } = await Astro.callAction(actions.products.getProducts, {
     productId: product.id,
     category: product.metadata.category,
   });
@@ -73,7 +74,15 @@ const { data: categoryProducts, error: categoryProductsError } = await Astro.cal
     </div>
 
     <div>
-      <pre>{JSON.stringify(categoryProducts, null, 2)}</pre>
+      <h2 class="mt-12 text-xl sm:text-2xl text-gray-900 font-semibold">Similar Products</h2>
+
+      <ul class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+        {sameCategoryProducts?.products?.map(product => 
+          <li>
+            <ProductCard product={product} href={`/shop/${product.id}`} />
+          </li>
+        )}
+      </ul>
     </div>
   </section>
 </StoreLayout>
