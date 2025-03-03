@@ -6,9 +6,10 @@ import type { StripeProduct } from "../lib/types";
 export const products = {
     getProducts: defineAction({
         input: z.object({
-            category: z.string().optional()
+            category: z.string().optional(),
+            productId: z.string().optional()
         }),
-        handler: async ({ category }) => {
+        handler: async ({ category, productId }) => {
 
             const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY, {
                 apiVersion: '2025-01-27.acacia',
@@ -39,9 +40,9 @@ export const products = {
                     }));
 
                     if(category){
-                        const filteredProductDTO = productsDTO.filter(product => product.metadata?.category === category)
+                        const filteredProductDTO = productsDTO.filter(product => product.id !== productId && product.metadata?.category === category)
 
-                        return { success: true, products: filteredProductDTO };
+                        return { success: true, products: [...filteredProductDTO] };
                 
                     }
 

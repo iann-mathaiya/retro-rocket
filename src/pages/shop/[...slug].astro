@@ -7,43 +7,73 @@ import AddToCartButton from "../../components/add-to-cart-btn";
 const { slug } = Astro.params;
 
 if (!slug) {
-    return new Response('Product not found', { status: 404 });
+  return new Response("Product not found", { status: 404 });
 }
 
-const { data, error } = await Astro.callAction(actions.products.getProduct,{ productId: slug });
+const { data, error } = await Astro.callAction(actions.products.getProduct, {
+  productId: slug,
+});
 
-const product = data?.product
+const product = data?.product;
 
 if (!product) {
-    return new Response('Product not found', { status: 404 });
+  return new Response("Product not found", { status: 404 });
 }
 
+const { data: categoryProducts, error: categoryProductsError } = await Astro.callAction(actions.products.getProducts, {
+    productId: product.id,
+    category: product.metadata.category,
+  });
 ---
 
 <StoreLayout title={product.name} description={product.description}>
-  <section class="px-4 pb-12" transition:animate={fade({ duration: '0.6s' })}>
-    <img src={product.images[0]} alt={product.name} class="mx-auto w-full max-w-lg" />
+  <section class="px-4 pb-12" transition:animate={fade({ duration: "0.6s" })}>
+    <img
+      src={product.images[0]}
+      alt={product.name}
+      class="mx-auto w-full max-w-lg"
+    />
 
-    <h1 class="mt-8 text-4xl sm:text-6xl text-center text-gray-900 font-semibold">{product.name}</h1>
-    <p class="mt-12 text-base sm:text-lg text-center text-gray-600 text-balance whitespace-pre-line">{product.description}</p>
+    <h1
+      class="mt-8 text-4xl sm:text-6xl text-center text-gray-900 font-semibold"
+    >
+      {product.name}
+    </h1>
+    <p
+      class="mt-12 text-base sm:text-lg text-center text-gray-600 text-balance whitespace-pre-line"
+    >
+      {product.description}
+    </p>
 
-    <h2 class="mt-12 text-3xl sm:text-4xl text-center text-gray-900 font-semibold">
-      ${typeof product.default_price === "object"
-        ? product.default_price?.unit_price
-        : product.default_price}
+    <h2
+      class="mt-12 text-3xl sm:text-4xl text-center text-gray-900 font-semibold"
+    >
+      ${
+        typeof product.default_price === "object"
+          ? product.default_price?.unit_price
+          : product.default_price
+      }
     </h2>
 
     <div class="mt-8 flex items-center justify-center gap-4">
       <AddToCartButton product={product} client:load />
-      
-      {product.metadata.source && 
-        <a 
-          href={product.metadata.source} target="_blank" rel="noopener noreferrer"
-          class="mt-2 w-fit py-2 px-8 min-h-8 flex items-center justify-center gap-2 text-gray-900 hover:text-orange-600 bg-transparent hover:bg-orange-200/40 border border-transparent hover:border-orange-300 hover:cursor-pointer rounded-full transition-all duration-300 ease-in-out">
-          Learn More
-        </a>
+
+      {
+        product.metadata.source && (
+          <a
+            href={product.metadata.source}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-2 w-fit py-2 px-8 min-h-8 flex items-center justify-center gap-2 text-gray-900 hover:text-orange-600 bg-transparent hover:bg-orange-200/40 border border-transparent hover:border-orange-300 hover:cursor-pointer rounded-full transition-all duration-300 ease-in-out"
+          >
+            Learn More
+          </a>
+        )
       }
     </div>
 
+    <div>
+      <pre>{JSON.stringify(categoryProducts, null, 2)}</pre>
+    </div>
   </section>
 </StoreLayout>
