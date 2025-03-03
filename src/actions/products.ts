@@ -26,8 +26,7 @@ export const products = {
                     throw new Error('Invalid response format from Stripe');
                 }
 
-                const productsDTO: StripeProduct[] = data.filter(product => product.metadata?.category === category)
-                    .map((product) => ({
+                const productsDTO: StripeProduct[] = data.map((product) => ({
                         ...product,
                         default_price: typeof product.default_price === 'object' ?
                             {
@@ -38,6 +37,13 @@ export const products = {
                             :
                             product.default_price,
                     }));
+
+                    if(category){
+                        const filteredProductDTO = productsDTO.filter(product => product.metadata?.category === category)
+
+                        return { success: true, products: filteredProductDTO };
+                
+                    }
 
                 return { success: true, products: productsDTO };
             } catch (error) {

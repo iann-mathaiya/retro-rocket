@@ -19,15 +19,22 @@ if (!user) {
     return Astro.redirect("/signin");
 }
 
-const { data, error } = await Astro.callAction(actions.products.getProducts, null)
+const { data, error } = await Astro.callAction(actions.products.getProducts, {
+    category: undefined,
+});
 
-const title = 'Products'
+const title = "Products";
 ---
+
 <AdminLayout title={title}>
     <section class="px-4">
         <div class="flex items-center justify-between">
             <h1 class="text-base text-gray-900 font-medium">{title}</h1>
-            <a href="/add-product" class="text-sm text-gray-600 hover:text-orange-600">Add Product +</a>
+            <a
+                href="/add-product"
+                class="text-sm text-gray-600 hover:text-orange-600"
+                >Add Product +</a
+            >
         </div>
 
         <pre>{JSON.stringify(data, null, 2)}</pre>

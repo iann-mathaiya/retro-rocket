@@ -18,15 +18,14 @@ import ProductCard from "../components/product-card.astro";
 //   }
 // }
 
-const { data, error } = await Astro.callAction(
-  actions.products.getProducts,
-  null,
-);
+const { data, error } = await Astro.callAction(actions.products.getProducts, {
+  category: undefined,
+});
 ---
 
 <StoreLayout>
   <section class="px-4">
-    <ul class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+    <ul class="pb-4 grid grid-cols-2 lg:grid-cols-3 gap-4">
       {
         data?.products?.map((product) => (
           <li>
