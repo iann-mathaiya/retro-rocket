@@ -5,7 +5,10 @@ import type { StripeProduct } from "../lib/types";
 
 export const products = {
     getProducts: defineAction({
-        handler: async () => {
+        input: z.object({
+            category: z.string().optional()
+        }),
+        handler: async ({ category }) => {
 
             const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY, {
                 apiVersion: '2025-01-27.acacia',
@@ -13,26 +16,28 @@ export const products = {
             });
 
             try {
-                const response = await stripe.products.list({
+
+                const { data } = await stripe.products.list({
                     active: true,
                     expand: ['data.default_price'],
                 });
 
-                if (!response?.data || !Array.isArray(response.data)) {
+                if (!data || !Array.isArray(data)) {
                     throw new Error('Invalid response format from Stripe');
                 }
 
-                const productsDTO: StripeProduct[] = response.data.map((product) => ({
-                    ...product,
-                    default_price: typeof product.default_price === 'object' ?
-                        {
-                            id: product.default_price?.id,
-                            currency: product.default_price?.currency,
-                            unit_price: ((product.default_price?.unit_amount ?? 0) / 100).toFixed(2),
-                        }
-                        :
-                        product.default_price,
-                }));
+                const productsDTO: StripeProduct[] = data.filter(product => product.metadata?.category === category)
+                    .map((product) => ({
+                        ...product,
+                        default_price: typeof product.default_price === 'object' ?
+                            {
+                                id: product.default_price?.id,
+                                currency: product.default_price?.currency,
+                                unit_price: ((product.default_price?.unit_amount ?? 0) / 100).toFixed(2),
+                            }
+                            :
+                            product.default_price,
+                    }));
 
                 return { success: true, products: productsDTO };
             } catch (error) {
@@ -81,5 +86,5 @@ export const products = {
                 return { success: false, message: "Failed to fetch product details" };
             }
         }
-    })
+    }),
 };
