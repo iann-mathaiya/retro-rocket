@@ -4,15 +4,6 @@ import { defineAction } from "astro:actions";
 import type { StripeProduct } from "../lib/types";
 
 export const products = {
-    addNewProduct: defineAction({
-        accept: 'form',
-        input: z.object({
-            name: z.string()
-        }),
-        handler: async () => {
-
-        }
-    }),
     getProducts: defineAction({
         handler: async () => {
 
