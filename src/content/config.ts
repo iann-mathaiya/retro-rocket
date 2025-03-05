@@ -2,14 +2,14 @@ import { glob } from "astro/loaders";
 import { z, defineCollection } from "astro:content";
 
 const articles = defineCollection({
-    loader: glob({ pattern: ["**/*.md", "**/*.mdx"], base: "./src/content/posts" }),
+    loader: glob({ pattern: ["**/*.md", "**/*.mdx"], base: "./src/content/articles" }),
     schema: ({ image }) => z.object({
         title: z.string(),
         pubDate: z.coerce.date(),
         updatedDate: z.coerce.date().optional(),
         cover: image(),
         coverAlt: z.string(),
-        author: z.string(),
+        author: z.string().default('Retro Rocket Team'),
         summary: z.string(),
         category: z.string(),
         readingDuration: z.number(),
