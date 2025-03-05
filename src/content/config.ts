@@ -1,19 +1,21 @@
 import { glob } from "astro/loaders";
-import { z, defineCollection } from "astro:content";
+import { z, reference, defineCollection } from "astro:content";
 
 const articles = defineCollection({
     loader: glob({ pattern: ["**/*.md", "**/*.mdx"], base: "./src/content/articles" }),
     schema: ({ image }) => z.object({
-        title: z.string(),
-        pubDate: z.coerce.date(),
-        updatedDate: z.coerce.date().optional(),
         cover: image(),
         coverAlt: z.string(),
-        author: z.string().default('Retro Rocket Team'),
+        title: z.string(),
+        isDraft: z.boolean(),
         summary: z.string(),
         category: z.string(),
-        readingDuration: z.number(),
+        pubDate: z.coerce.date(),
         tags: z.array(z.string()),
+        readingDuration: z.number(),
+        updatedDate: z.coerce.date().optional(),
+        author: z.string().default('Retro Rocket Team'),
+        relatedArticles: z.array(reference('articles')),
     }),
 });
 
