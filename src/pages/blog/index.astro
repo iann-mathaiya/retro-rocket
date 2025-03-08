@@ -1,5 +1,8 @@
 ---
+import { getCollection } from "astro:content";
 import StoreLayout from "../../layouts/StoreLayout.astro";
+
+const allArticles = await getCollection('articles');
 ---
 
 <StoreLayout title="Blog">
@@ -13,5 +16,7 @@ import StoreLayout from "../../layouts/StoreLayout.astro";
                 Articles about productive workspaces and aesthetic desk setups
             </p>
         </div>
+
+        <pre>{JSON.stringify(allArticles, null, 2)}</pre>
     </section>
 </StoreLayout>
