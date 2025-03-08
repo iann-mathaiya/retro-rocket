@@ -15,7 +15,7 @@ const articles = defineCollection({
         isDraft: z.boolean().default(false),
         updatedDate: z.coerce.date().optional(),
         author: z.string().default('Retro Rocket Team'),
-        relatedArticles: z.array(reference('articles')),
+        relatedArticles: z.array(reference('articles')).optional(),
     }),
 });
 
