@@ -17,6 +17,18 @@ const allArticles = await getCollection('articles');
             </p>
         </div>
 
+        <ul class="mt-8">
+            {allArticles.map(({data}) => 
+                <li>
+                    <h2 class="text-xl text-gray-900 font-medium">{data.title}</h2>
+                    <p>{data.summary}</p>
+                    <p class="text-sm text-gray-600">
+                        {data.pubDate} &middot; {data.author}
+                    </p>
+                </li>
+            )}
+        </ul>
+
         <pre>{JSON.stringify(allArticles, null, 2)}</pre>
     </section>
 </StoreLayout>
