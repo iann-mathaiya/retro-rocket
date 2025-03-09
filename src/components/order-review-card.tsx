@@ -2,6 +2,7 @@ import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import { actions } from 'astro:actions';
 import { cartAtom, stripeCheckoutSessionAtom } from '../lib/store';
+import { format } from 'date-fns';
 
 export default function OrderReviewCard() {
     const [cart, setCart] = useAtom(cartAtom);
@@ -21,9 +22,9 @@ export default function OrderReviewCard() {
                     return;
                 }
 
-                setStripeCheckoutSession(data.session)
+                setStripeCheckoutSession(data.session);
 
-                
+
             } catch (err) {
                 console.error('Error fetching session data:', err);
             }
@@ -47,7 +48,7 @@ export default function OrderReviewCard() {
         handleOrderCompletion();
     }, [cart, setCart]);
 
-    const session = stripeCheckoutSession
+    const session = stripeCheckoutSession;
 
     return (
         <>
@@ -117,7 +118,7 @@ export default function OrderReviewCard() {
 
                 <div className='space-y-1 sm:order-first sm:col-span-2'>
                     <h2 className='text-sm text-gray-900 font-semibold'>In your bag</h2>
-                    <p className='text-xs text-gray-600'>Ordered at {session?.orderedAt}</p>
+                    <p className='text-xs text-gray-600'>Ordered at {session?.orderedAt && format(session?.orderedAt, "PP")}</p>
                     <ul className='space-y-6 sm:space-y-8'>
                         {session?.orderItems?.map(item =>
                             <li key={item.id} className='flex items-center'>
