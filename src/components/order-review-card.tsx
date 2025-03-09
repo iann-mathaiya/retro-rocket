@@ -118,7 +118,7 @@ export default function OrderReviewCard() {
 
                 <div className='space-y-1 sm:order-first sm:col-span-2'>
                     <h2 className='text-sm text-gray-900 font-semibold'>In your bag</h2>
-                    <p className='text-xs text-gray-600'>Ordered at {session?.orderedAt && format(session?.orderedAt, "PP")}</p>
+                    <p className='text-xs text-gray-600'>Ordered at {session?.orderedAt && format(session?.orderedAt, "PPP")}</p>
                     <ul className='space-y-6 sm:space-y-8'>
                         {session?.orderItems?.map(item =>
                             <li key={item.id} className='flex items-center'>

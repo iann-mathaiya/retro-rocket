@@ -24,7 +24,7 @@ const allArticles = await getCollection('articles');
                     <h2 class="text-xl text-gray-900 font-medium">{data.title}</h2>
                     <p>{data.summary}</p>
                     <p class="text-sm text-gray-600">
-                        {format(data.pubDate, "P")} &middot; {data.author}
+                        {format(data.pubDate, "PPP")} &middot; {data.author}
                     </p>
                 </li>
             )}
