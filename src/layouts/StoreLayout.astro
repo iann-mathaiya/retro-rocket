@@ -3,6 +3,7 @@ import Logo from "../assets/logo.svg";
 import RootLayout from "./RootLayout.astro";
 import CartLink from "../components/cart-link";
 import SearchInput from "../components/search-input";
+import FloatingMobileNavigation from "../components/floating-mobile-nav";
 
 const pathname = Astro.url.pathname
 
@@ -40,6 +41,8 @@ const { title, description } = Astro.props;
             </div>
 
             <slot />
+
+            <FloatingMobileNavigation client:load />
         </div>
     </section>
 </RootLayout>
