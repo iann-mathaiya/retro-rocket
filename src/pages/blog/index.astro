@@ -1,17 +1,16 @@
 ---
-import { format } from 'date-fns';
+import { format } from "date-fns";
 import { getCollection } from "astro:content";
 import StoreLayout from "../../layouts/StoreLayout.astro";
+import { formatBlogTitle } from "../../lib/utils";
 
-const allArticles = await getCollection('articles');
+const allArticles = await getCollection("articles");
 ---
 
 <StoreLayout title="Blog">
     <section class="px-4 py-8">
         <div>
-            <h1 class="text-3xl text-gray-900 font-semibold">
-                Blog
-            </h1>
+            <h1 class="text-3xl text-gray-900 font-semibold">Blog</h1>
 
             <p class="mt-2 text-sm text-gray-600">
                 Articles about productive workspaces and aesthetic desk setups
@@ -19,15 +18,22 @@ const allArticles = await getCollection('articles');
         </div>
 
         <ul class="mt-8">
-            {allArticles.map(({data}) => 
-                <li>
-                    <h2 class="text-xl text-gray-900 font-medium">{data.title}</h2>
-                    <p>{data.summary}</p>
-                    <p class="text-sm text-gray-600">
-                        {format(data.pubDate, "PPP")} &middot; {data.author}
-                    </p>
-                </li>
-            )}
+            {
+                allArticles.map(({ data }) => (
+                    <li>
+                        <a href={`/blog/${formatBlogTitle(data.title)}`} >
+                            <h2 class="text-xl text-gray-900 font-medium">
+                                {data.title}
+                            </h2>
+                            <p>{data.summary}</p>
+                            <p class="text-sm text-gray-600">
+                                {format(data.pubDate, "PPP")} &middot;{" "}
+                                {data.author}
+                            </p>
+                        </a>
+                    </li>
+                ))
+            }
         </ul>
 
         <pre>{JSON.stringify(allArticles, null, 2)}</pre>
