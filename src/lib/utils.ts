@@ -2,8 +2,8 @@ import { countries as countriesJSON } from 'countries-list';
 import type { OrderItem } from './types';
 import type Stripe from 'stripe';
 
-export function formatBlogTitle(title: string): string {
-  return title.trim().toLowerCase().replace(/\s+/g, "-");
+export function formatTextToReadableURL(text: string): string {
+  return text.trim().toLowerCase().replace(/\s+/g, "-");
 }
 
 export const countries = Object.entries(countriesJSON).map(([code, country]) => ({
