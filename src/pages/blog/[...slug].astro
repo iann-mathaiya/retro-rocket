@@ -2,8 +2,11 @@
 import { getCollection, render } from 'astro:content';
 import StoreLayout from "../../layouts/StoreLayout.astro";
 
+export const prerender = true;
+
 export async function getStaticPaths() {
     const articles = await getCollection("articles");
+
     return articles.map((article) => ({
         params: { slug: article.id },
         props: { article },
@@ -12,11 +15,15 @@ export async function getStaticPaths() {
 
 const { article } = Astro.props;
 
-console.log(article);
+if(article === undefined) {
+    return new Response('Article not found', { status: 404 });
+}
 
 const { Content } = await render(article);
 ---
 
 <StoreLayout title={article.data.title} frontmatter={article.data}>
-    <Content />
+    <section class="px-4 py-8">
+        <Content />
+    </section>
 </StoreLayout>
