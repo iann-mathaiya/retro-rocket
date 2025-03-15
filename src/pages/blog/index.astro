@@ -20,7 +20,7 @@ const allArticles = await getCollection("articles");
             {
                 allArticles.map((article) => (
                     <li>
-                        <a href={`/blog/${article.id}`} >
+                        <a href={`/blog/${article.rendered?.metadata ? article.rendered.metadata.headings[0].slug : article.id}`} >
                             <h2 class="text-xl text-gray-900 font-medium">
                                 {article.data.title}
                             </h2>
