@@ -3,6 +3,7 @@ import type { MarkdownHeading } from "astro";
 import Prose from "../../components/prose.astro";
 import { getCollection, render } from "astro:content";
 import StoreLayout from "../../layouts/StoreLayout.astro";
+import { format } from "date-fns";
 
 export const prerender = true;
 
@@ -46,6 +47,23 @@ const relatedArticles = allArticles.filter(
             <Content />
         </Prose>
 
-        <pre>{JSON.stringify(relatedArticles, null, 2)}</pre>
+        <ul class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {
+                relatedArticles.map((article) => (
+                    <li>
+                        <a href={`/blog/${article.rendered?.metadata ? (article.rendered.metadata.headings as unknown as MarkdownHeading[])[0].slug : article.id}`} >
+                            <h2 class="text-base text-gray-900 font-medium">
+                                {article.data.title}
+                            </h2>
+                            <p>{article.data.summary}</p>
+                            <p class="text-sm text-gray-600">
+                                {format(article.data.pubDate, "PPP")} &middot;{" "}
+                                {article.data.author}
+                            </p>
+                        </a>
+                    </li>
+                ))
+            }
+        </ul>
     </section>
 </StoreLayout>
