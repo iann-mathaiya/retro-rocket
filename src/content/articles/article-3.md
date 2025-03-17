@@ -1,14 +1,14 @@
 ---
 isDraft: true
-title: "How to build an aesthetic home office"
+title: "Minimal PC cases you should consider for your next custom PC build"
 author: Retro Rocket Team
 category: "Productivity"
 readingDuration: 2
 cover: ""
 coverAlt: ""
-pubDate: "2025 3 16"
+pubDate: "2025 3 17"
 tags: ["productivity", "aesthetic", "home office", "work from home"]
 summary: ""
 ---
 
-# How to build an aesthetic home office
+# Minimal PC cases you should consider for your next custom PC build
