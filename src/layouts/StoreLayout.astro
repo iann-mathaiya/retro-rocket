@@ -18,13 +18,13 @@ const { title, description } = Astro.props;
                     <a href="/">
                         <Logo width={32} height={32} fill="currentColor" />
                     </a>
-                    <a href="/" data-active={pathname === '/'} class="hidden sm:block text-sm text-gray-600  hover:text-orange-600 data-[active=true]:text-orange-600">
+                    <a href="/" data-active={pathname === '/'} class="hidden sm:block text-sm text-gray-600 whitespace-nowrap  hover:text-orange-600 data-[active=true]:text-orange-600">
                         Products
                     </a>
-                    <a href="/blog" data-active={pathname === '/blog'} class="hidden sm:block text-sm text-gray-600  hover:text-orange-600 data-[active=true]:text-orange-600">
+                    <a href="/blog" data-active={pathname === '/blog'} class="hidden sm:block text-sm text-gray-600 whitespace-nowrap  hover:text-orange-600 data-[active=true]:text-orange-600">
                         Blog
                     </a>
-                    <a href="/about" data-active={pathname === '/about'} class="hidden sm:block text-sm text-gray-600  hover:text-orange-600 data-[active=true]:text-orange-600">
+                    <a href="/about" data-active={pathname === '/about'} class="hidden sm:block text-sm text-gray-600 whitespace-nowrap  hover:text-orange-600 data-[active=true]:text-orange-600">
                         About
                     </a>
                 </div>
@@ -32,7 +32,7 @@ const { title, description } = Astro.props;
                 <SearchInput client:load />
 
                 <div class="flex items-center justify-center gap-4">
-                    <a href="/support" data-active={pathname === '#'} class="hidden sm:block text-sm text-gray-600  hover:text-orange-600 data-[active=true]:text-orange-600">
+                    <a href="/support" data-active={pathname === '/support'} class="hidden sm:block text-sm text-gray-600 whitespace-nowrap  hover:text-orange-600 data-[active=true]:text-orange-600">
                         Need help shopping?
                     </a>
                     <CartLink pathname={pathname} client:load />
