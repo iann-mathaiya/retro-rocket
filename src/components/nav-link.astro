@@ -1,0 +1,7 @@
+---
+const { href, label, pathname } = Astro.props
+---
+
+<a href={`${href}`} data-active={pathname === `${href}`} class="hidden sm:block text-sm text-gray-600 whitespace-nowrap  hover:text-orange-600 data-[active=true]:text-orange-600">
+    {label}
+</a>

@@ -4,6 +4,7 @@ import RootLayout from "./RootLayout.astro";
 import CartLink from "../components/cart-link";
 import SearchInput from "../components/search-input";
 import FloatingMobileNavigation from "../components/floating-mobile-nav";
+import NavLink from "../components/nav-link.astro";
 
 const pathname = Astro.url.pathname
 
@@ -18,23 +19,16 @@ const { title, description } = Astro.props;
                     <a href="/">
                         <Logo width={32} height={32} fill="currentColor" />
                     </a>
-                    <a href="/" data-active={pathname === '/'} class="hidden sm:block text-sm text-gray-600 whitespace-nowrap  hover:text-orange-600 data-[active=true]:text-orange-600">
-                        Products
-                    </a>
-                    <a href="/blog" data-active={pathname === '/blog'} class="hidden sm:block text-sm text-gray-600 whitespace-nowrap  hover:text-orange-600 data-[active=true]:text-orange-600">
-                        Blog
-                    </a>
-                    <a href="/about" data-active={pathname === '/about'} class="hidden sm:block text-sm text-gray-600 whitespace-nowrap  hover:text-orange-600 data-[active=true]:text-orange-600">
-                        About
-                    </a>
+
+                    <NavLink href="/" label="Products" pathname={pathname} />
+                    <NavLink href="/blog" label="Blog" pathname={pathname} />
+                    <NavLink href="/about" label="About" pathname={pathname} />
                 </div>
 
                 <SearchInput client:load />
 
                 <div class="flex items-center justify-center gap-4">
-                    <a href="/support" data-active={pathname === '/support'} class="hidden sm:block text-sm text-gray-600 whitespace-nowrap  hover:text-orange-600 data-[active=true]:text-orange-600">
-                        Need help shopping?
-                    </a>
+                    <NavLink href="/support" label="Need help shopping?" pathname={pathname} />
                     <CartLink pathname={pathname} client:load />
                     
                 </div>
