@@ -3,7 +3,7 @@
 export default function PromptSupportInput() {
     return (
         <div className="sm:mt-8 w-full max-w-2xl fixed bottom-0 sm:relative p-4">
-            <div className="bg-gray-300/50 border border-gray-400/40 rounded-2xl backdrop-blur-xl">
+            <div className="flex flex-col gap-0 bg-gray-300/50 border border-gray-400/40 rounded-2xl backdrop-blur-xl">
                 <textarea rows={4} name="support-prompt" placeholder="Ask anything..." className="px-3 py-2 min-h-16 w-full text-sm outline outline-none resize-none field-sizing-content" />
                 <div className="flex sm:justify-end p-1.5">
                     <button type="button" className="p-2 text-sm text-white bg-gray-950 hover:bg-orange-600 hover:cursor-pointer rounded-full">
