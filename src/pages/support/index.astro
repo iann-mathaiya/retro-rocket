@@ -1,10 +1,6 @@
 ---
-import { format } from "date-fns";
-import type { MarkdownHeading } from "astro";
-import { getCollection } from "astro:content";
 import StoreLayout from "../../layouts/StoreLayout.astro";
-
-const allArticles = await getCollection("articles");
+import PromptSupportInput from "../../components/prompt-support-input";
 ---
 
 <StoreLayout title="Support">
@@ -15,5 +11,7 @@ const allArticles = await getCollection("articles");
             Get support about your order, account, refunds, or any other
             questions
         </p>
+
+        <PromptSupportInput client:load />
     </section>
 </StoreLayout>
