@@ -1,8 +1,7 @@
 import { z } from "astro:schema";
 import { generateText } from "ai";
-import { defineAction } from "astro:actions";
-import { google } from "@ai-sdk/google";
 import { googleAI } from "../lib/ai";
+import { defineAction } from "astro:actions";
 
 export const support = {
     createTicket: defineAction({
@@ -21,7 +20,9 @@ export const support = {
                     prompt: supportPrompt
                 });
 
-                console.log(response);
+                console.log(response.text);
+
+
             } catch (error) {
                 console.error('Error creating support ticket:', error);
                 return { success: false, message: "Failed to create support ticket" };

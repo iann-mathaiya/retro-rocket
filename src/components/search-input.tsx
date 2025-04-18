@@ -23,7 +23,7 @@ export default function SearchInput() {
     }
 
     return (
-        <form action="" className="w-full max-w-md relative">
+        <form className="w-full max-w-md relative">
             <input type="text" placeholder="Search products..." value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={handleKeyDown}
