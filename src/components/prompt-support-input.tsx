@@ -8,7 +8,7 @@ export default function PromptSupportInput() {
     const [success, setSuccess] = useState("");
     const [AiOutput, setAiOutput] = useState("");
 
-    function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
         setIsLoading(true)
@@ -16,8 +16,15 @@ export default function PromptSupportInput() {
         const formData = new FormData();
         formData.append("support-prompt", supportPrompt);
 
-        const response = actions.support.createTicket(formData);
+        const { data, error } = await actions.support.createTicket(formData);
 
+        if (!data?.success) {
+            console.error('Failed to retrieve session:', error);
+            return;
+        }
+
+        setSupportPrompt("");
+        setAiOutput(data.output ?? "");
         setIsLoading(false)
     }
 
@@ -36,6 +43,8 @@ export default function PromptSupportInput() {
                     </button>
                 </div>
             </form>
+
+            <p className="mt-4 px-4 text-sm text-zinc-800">{AiOutput}</p>
         </div>
     );
 }

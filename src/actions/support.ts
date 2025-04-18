@@ -20,8 +20,7 @@ export const support = {
                     prompt: supportPrompt
                 });
 
-                console.log(response.text);
-
+                return { success: true, output: response.text };
 
             } catch (error) {
                 console.error('Error creating support ticket:', error);
