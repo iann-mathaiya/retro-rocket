@@ -12,13 +12,13 @@ export const support = {
         handler: async (input) => {
             const supportPrompt = input["support-prompt"];
 
-            console.log(supportPrompt);
-
             try {
                 const response = await generateText({
                     model: googleAI("gemini-2.0-flash"),
                     prompt: supportPrompt
                 });
+
+                console.log(response)
 
                 return { success: true, output: response.text };
 
