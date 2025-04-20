@@ -29,7 +29,7 @@ export default function PromptSupportInput() {
     }
 
     return (
-        <div className="sm:mt-8 w-full max-w-2xl fixed bottom-0 sm:relative p-4">
+        <div className="sm:mt-8 w-full max-w-2xl fixed bottom-0 sm:relative">
             <form onSubmit={handleSubmit} className="relative flex flex-col gap-0 bg-gray-300/50 border border-gray-400/40 focus-within:border-gray-400 rounded-2xl backdrop-blur-xl">
                 <textarea
                     rows={10}
