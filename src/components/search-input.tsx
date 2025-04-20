@@ -4,9 +4,8 @@ import { searchQueryAtom } from "../lib/store";
 import { navigate } from "astro:transitions/client";
 
 
-export default function SearchInput() {
+export default function SearchInput({ pathname }: { pathname: string; }) {
     const [query, setQuery] = useAtom(searchQueryAtom);
-    const [isLoading, setIsLoading] = useState(false);
 
     function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
         if (e.key === 'Enter' && query.trim()) {
@@ -19,7 +18,9 @@ export default function SearchInput() {
 
     function clearSearchQuery() {
         setQuery('');
-        navigate('/');
+        if (pathname === '/search') {
+            navigate('/');
+        }
     }
 
     return (

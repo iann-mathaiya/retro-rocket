@@ -1,5 +1,4 @@
 import { atom } from "jotai";
-import type Stripe from "stripe";
 import type { CartItem, StripeOrder } from "./types";
 
 export const cartAtom = atom<CartItem[]>([]);

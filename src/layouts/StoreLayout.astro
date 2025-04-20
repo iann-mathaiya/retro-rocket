@@ -25,7 +25,7 @@ const { title, description } = Astro.props;
                     <NavLink href="/about" label="About" pathname={pathname} />
                 </div>
 
-                <SearchInput client:load />
+                <SearchInput pathname={pathname} client:load />
 
                 <div class="flex items-center justify-center gap-4">
                     <NavLink href="/support" label="Need help shopping?" pathname={pathname} />
