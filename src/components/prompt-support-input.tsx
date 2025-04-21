@@ -1,4 +1,4 @@
-// import { actions } from "astro:actions";
+import { actions } from "astro:actions";
 import { useState, type FormEvent } from "react";
 // import { useChat } from '@ai-sdk/react';
 

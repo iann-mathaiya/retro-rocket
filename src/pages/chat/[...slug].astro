@@ -1,0 +1,13 @@
+---
+import StoreLayout from "../../layouts/StoreLayout.astro";
+
+const { slug } = Astro.params;
+
+if (!slug) {
+  return new Response("Conversation not found", { status: 404 });
+}
+//fetch ai conversation
+---
+<StoreLayout title={`TO DO: Chat title goes here`} description="More about the AI conversation">
+    
+</StoreLayout>
