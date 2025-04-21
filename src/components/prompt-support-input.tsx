@@ -1,5 +1,6 @@
-import { actions } from "astro:actions";
+// import { actions } from "astro:actions";
 import { useState, type FormEvent } from "react";
+// import { useChat } from '@ai-sdk/react';
 
 export default function PromptSupportInput() {
     const [supportPrompt, setSupportPrompt] = useState('');
@@ -7,6 +8,8 @@ export default function PromptSupportInput() {
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
     const [AiOutput, setAiOutput] = useState("");
+    // const { messages, input, handleInputChange, handleSubmit } = useChat({});
+
 
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
