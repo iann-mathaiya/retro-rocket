@@ -15,7 +15,11 @@ export const support = {
             try {
                 const response = await generateText({
                     model: googleAI("gemini-2.0-flash"),
-                    prompt: supportPrompt
+                    prompt: supportPrompt,
+                    // biome-ignore lint/style/noUnusedTemplateLiteral: <explanation>
+                    system: `Add system prompt/instructions here` + 
+                    // biome-ignore lint/style/noUnusedTemplateLiteral: <explanation>
+                    `concat the prompt like this for readability`,
                 });
 
                 console.log(response)
